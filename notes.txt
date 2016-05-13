@@ -1,0 +1,135 @@
+Big data 
+volume ,velocity ,variety and veracity(the inconsistant data like data missing)
+
+Hadoop distributions:
+apache
+cloudera IBM microsoft Mapr hortonworks opensource CDH BigInsights HDInsights
+
+
+
+used for . fraud detection , modelkung true risk, thread analkysis , fraud detection , trade surveilence ,
+credit score ,
+point of sale 
+sentimental analysis 
+customer churn analysis churn means find the customers when they change the normal behaviour like changeing the phone network to other because of not happy 
+
+
+Hadoop is a framework that allows distributed processing of large data sets across clusters of comodity computers
+it is distibuted scalable processing system
+
+hadoop is optimised to access batches of data set quicker (High throughput)
+
+HDFS
+Namenode -master - contains namespace like data which is metadata - contiains files and directories structure
+datanode -slave
+
+Yarn - yet another resource negeotiator 
+Resource manager - Master 
+node manager -slave
+app master  - slave 
+
+master --- slave
+|   \ |_______  
+|    \  	  \
+|     \        \
+slave  slave    slave
+
+here slave means datanode,nodemanager
+master - namenode , resource manager
+
+gen 1  64Mb default
+gen 2  128mb default block size
+replication is for fault tularence
+
+200mb - 128+72 - block1 +block2
+
+
+
+Mater 1							master 2				master 3
+namenode-active					namenode-standby		resource manager
+
+
+hadoop characteristics 
+reliable flexible scalable economical 
+
+hadoop is a schemaless it can attract any type of data 
+
+data locally optimisations -- program moves near data to process data
+schema required on read 
+writes are fast
+data discovery
+processing unstructured data
+massive storage /proccessing
+
+Graph and MPI is not possible in gen 1
+
+
+flume - gets unstructured or semi structured data like twitter data to hadoop 
+sqoop - move rdbms to hadoop vice versa
+
+Hive - Dw
+MR - prcessing framework - batch proccessing - 
+HBase - no SQL
+Mahout  ML Tool
+oozie - workflow controller
+
+
+Namenode
+---------
+FSImage        > when you start cluster hadoop writes image(snapshot of fs) into file FSImage
+EditLogs       > user adds and delete files (this will be uopdated to logs)
+always stores data in main memeory
+types of metadata
+1. list files,blocks of wach file , 
+list of datanode for each block
+file attribute
+A transaction log - which keeps file creations and deletions
+
+Secondary namenode:
+---------------
+not a standbay namenode
+connected to namenode every hour 
+copies FSImage 
+---------------------------
+Let's assume that, you have 100 TB of data to store and process with Hadoop. The
+configuration of each available DataNode is as follows:
+ 8 GB RAM
+ 10 TB HDD
+ 100 MB/s read-write speed
+You have a Hadoop Cluster with replication factor = 3 and block size = 64 MB.
+In this case, the number of DataNodes required to store would be:
+ Total amount of Data * Replication Factor / Disk Space available on each DataNode
+ 100 * 3 / 10
+ 30 DataNodes
+Now, let's assume you need to process this 100 TB of data using MapReduce.
+And, reading 100 TB data at a speed of 100 MB/s using only 1 node would take:
+ Total data / Read-write speed
+ 100 * 1024 * 1024 / 100
+ 1048576 seconds
+ 291.27 hours
+So, with 30 DataNodes you would be able to finish this MapReduce job in:
+ 291.27 / 30
+ 9.70 hours 
+
+
+How many such Data Nodes you would need to read 100TB data in 5 minutes in your
+Hadoop Cluster? 
+
+1..1 Time required to read the data using Single DataNode
+1 DataNode takes:
+Total Data/Read –Write speed
+(100TB * 1024*1024) in MB / 100MB/s
+1048576 seconds or 291.77 hours to read 100TB Data
+
+Number of DataNodes required to read 100TB in 5 minutes
+Time taken by 1 DataNode to read the 100TB data / Total time given to finish
+the read
+= ( 1048576 secs/60)/5 minutes (Here we are converting 1048576 seconds to minutes - dividing by 60 )
+= 3495.253333 DataNodes
+So, you would need ~ 3495 such DataNodes to read the 100TB data in 5 minutes
+------------------------------------------------------------------------
+
+Hadoop Vs. mongoDB
+MongoDB® is used as the “Operational” real-time data store whereas Hadoop is used for offline batch data processing and analysis.
+mongoDB is a document oriented, schema-less data store which you can use in a web application as a backend instead of RDBMS like MySQL whereas Hadoop is mainly used in as scale-out storage and distributed processing for large amount of data.
+------------------

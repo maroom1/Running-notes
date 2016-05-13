@@ -1,0 +1,55 @@
+FLume
+
+is described as a system for the retrieval and distribution of logs ,textual data
+
+flume event-- unit of data flow
+flume agent - the processes which helps to flow data from src to dest
+
+webserver -> source --> channel --> sink --> hdfs
+			------------------------------
+						agent
+						
+agent.sources
+agent.sinks
+agent.channels
+
+sqoop import rdbms to hdfs
+sqoop export hdfs to rdbms
+
+oozie is a workflow are coordination system
+
+oozie server  .. it is a webabbplication which runs on tomcat
+
+oozie components
+
+oozie workflow
+oozie coordinator (setting time intervals for workflows)
+oozie bundles
+
+oozie workflow will be written everything in xml file 
+it contains start and end tags where we soecify full configuration 
+
+job.properties
+specy here namenode  jobtracker queuename job directory 
+
+the same properties can be read in xml using ${namenode}
+
+
+
+from command line ww can run like oozie job
+
+we have to keep the jobid with us for knowing the status 
+
+ststuses
+
+prep
+killed
+failed
+running
+suspended
+successfull
+
+coordinator
+ we have coordinator.xml and properties files
+ 
+ 

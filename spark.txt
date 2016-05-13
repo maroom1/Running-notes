@@ -1,0 +1,267 @@
+
+grep ->hadoop -> spark 
+
+big code -> tiny code
+
+spark --- readability  (tinier code)
+		  expressiveness (more expressive code)
+		  fast ()
+		  testability (you can write code isnt distibute)
+		  interactive (you directly interect from local machine -- you can debug more problems from local machine)
+		  fault tolerance ()
+		  unify big data needs (ML , graph processing, streaming data etc) 
+basics of spark 
+core API
+cluster managers
+spark maintenance
+libraries
+
+--- spark bg--
+for streaming - storm 
+scalding
+clear data - hive
+so so so so so so 
+
+to overcome all these frameworks spark was introduced
+
+aa unified paltform
+
+DataFrames 
+|
+|
+spark-------spark   -----machinelearning----graphx
+sql 		streaming 
+|
+|
+spark core
+
+
+Lines of code in decresing manner
+hadoop MR->Impala -> Storm -> Giraph-> Spark
+say
+100000->80000->70000->60000->75000(40000(spark core),10000(SQL which used for optimisation),10000(Streaming data),5000(GraphX) Which includes all the previous codes in one set)
+
+
+There is no need to write intermediate data into disk which is very costly
+
+all in memory 
+
+we can learn one framework instead og many 
+
+---------
+
+MR 2004 -> hadoop 2006 -> spark 2009 -> spark paper 2010 ,BSD open source -> incubated amplab 2011 -> databricks 2013 for supporting spark , Apache  -> 2014 apache top level project  
+
+Databricks -- stable framework 
+
+who is using
+
+pandora, yahoo,netflix, goldman sachs, comcast,conviva
+ooyala, ebay,twitter,janelia , 
+
+Spark-2356 ticket will help us in removing error  during starting of spark-shell in windows
+
+
+this ticket will provie winutil.exe
+
+------------------
+
+spark supports
+
+scala (it will be best )
+java
+python
+R
+
+------------
+REPL read execute present Loop
+
+shell creates sc(spark context) and sqlContext(sql lib)
+
+sc is the starting point
+
+RDD - resilient distributed Dataset
+
+spark core divided to transformation and actions 
+
+Spark is lazy evluation
+
+val textfile = sc.textFile("Readme.md")
+textFile.first
+
+
+sparks makes unit testing more easy than any programming model
+
+core API
+-Appify
+-RDD
+-Transforming
+-Action1
+
+Driver is managed by spark context
+|\
+|  \
+worer   worker 
+
+sc  --- builds execution graph which sends to each worker 
+Task Creator
+scheduler
+data locality
+fault tolerance (monitoring those tasks)
+
+There are more multiple ways to create one or more SC
+
+but this is not encouraged becuase of discripency in managing 
+
+RDD - Resilient Distributed Dataset
+collection of elements paritioned across nodes of the cluster that can be operated on in parallel
+
+resilient - fault tolerance
+distributed - process in distributed statement
+
+
+DAG files are created storing all the statements , until a action statement is called 
+
+Directed Acyclic Graph DAG
+
+DAG are sent to workers
+
+Transformations
+  map
+  filter
+  
+  
+  Actions
+   collect
+   count
+   reduce
+ 
+RDD is immutable , this is a lineage ... eac action triggers fresh execution of DAG
+
+excuted parallel across CPU
+input----
+file:// 
+hdfs://
+s3n://
+from DB
+even we can load from memory 
+different file formats (avro , parquet)
+
+lamda expressions also known as anonymous functions 
+
+rdd.flatMap(line=>line.split(" "))  -----> 
+
+python allows single line lamdas 
+
+spark can support multiple line lamdas functions 
+
+Transformations : 
+
+spark RDD has two types of methods -- transformation and actions 
+
+1 RDD to other RDD is Transforming
+
+mapItemFunctions(items) will be more usefull when map the items 
+
+Araay -- RDD of arrays 
+
+combinedRDD=RDD1.union(RDD2)
+
+you can follow union distinct 
+we can use ++
+sc.union(RDD1,RDD2)
+
+RDD1.intersection(RDD2)
+
+RDD1.subtract(RDD2)
+
+RDD1.cartesian(RDD2) = which is like double for loop = iterate between two RDD's 
+here each element will be linked to all the elements of other RDD
+
+RDD1.zip(RDD2) --> requires both rdd's should have same number of elements or paritions
+each item in each RDD should be paired or should have pair ----
+zipwithIndex zipwithUniqueID  will be no use
+
+this will be more usefull 
+
+Actions : 
+actions results typically to send the data back to driver after executing 
+
+if the actions ran in each worker before sending the data back to driver this is map side combine 
+
+here we reuire function parameters should be associative 
+
+(2+4)+(4+7)
+6+11
+17
+
+
+and (2+4+4)+7
+10+7
+17
+
+.sample(false,fraction=.01) == slect 1% of data from RDD where fraction rage is from 0 to 1
+.take(5) == select 5 elements of rdd` 
+.takesample(false,5) == selection randon elements od rdd
+.max
+.min
+
+spark-shell --jars "list of jars" loding jards
+
+
+.COUNTAPPROXDISTINCT(.01) OR (.0005) THE HIGHER THE VALUE , THE HIGHER THE SPEED 
+THE LOWER VALUE , THE HIGHER THE CORRECTNESS 
+
+MAXBY(x=>x._2)
+
+val simpleRDD=sc.makeRDD(1 to 3)
+simpleRDD.reduce((acc,val)=>acc+val)
+
+reduce is associative and commutative 
+
+sc.emptyRDD[Int].reduce((x,y)=>x+y) --> unsupported operation exception becaue RDD is empty
+
+simpleRDD.fold(0)(x,y)=>x+y  
+			  ---
+			   |
+			   |
+			 this value gives what output it should result like  0 is Int so res0: Int=6
+simpleRDD.aggregate("")(()=>,()=>)
+			        ---
+			         |
+			         |
+			 this value gives what output it should result like  "" is String so res0: String=213
+			 
+	this aggregate function will yield different values when you run the same statment,. 
+	
+finala action 
+Data Persistance : 
+
+in big data where 
+from workers we can put/ write data direclty to data souce 
+
+saveAsObjectFile(path)
+saveAsTextFile(path)  = two string method 
+External connector == save natively in whatever format you want
+foreach(T=>Unit)
+  foreachpartition(Iterator[T]=>Unit)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

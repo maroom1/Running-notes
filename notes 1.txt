@@ -1,0 +1,52 @@
+hadoop dfsadmin -safemode leave
+
+Master 
+localhost:50070/dfshealth.jsp
+
+resource manager 
+localhost:8088/cluster
+
+map reduce job history server 
+localhost:19888/jobhistory
+
+heartbeat for every 3 sec
+
+client HDFS uses a special plugin called viewFS  to view the logical, global namespace as a single entity 
+
+gen 1 limitations resolved using federation installing different namenodes for different apps
+block pool helps to know about every namenode in federation
+
+ACTIVE and standby namenode willbe in sync WITH THE HELP OF ZOO KEPER
+ALL DATANODES	 WILL send heartbeat to two namenodes
+
+active writes to zookeper edit logs then to standby namenode
+
+in gen 2 sn is optional
+
+Hadoop folder :
+
+hadoop-env.sh  --- java_home which is used for running hadoop core scripts  -- heapsize ,datanode heapsize etc properties can be configured
+core-site.xml  -- where namenode has to run -- hdfs://localhost:9000 --fs.defaultFS --- fs.default.name
+hdfs-site.xml ---- dfs.replication --1 --- dfs.permissions(if this used only main user can delete files) --false--
+						dfs.namenode.name.dir --- it determines where the local namenode table stored(fsImage)
+						dfs.namenode.data.dir -- datanode
+mapred-site.xml ----- mapreduce.framework.name -- yarn
+yarn-site.xml  --- nodemanager  --- > confifure auxillary services 
+masters  ---- used for secondary namenode for gen 2 it is optional
+slaves ---- datanode and nodemamangers machines like localhost or some IP address
+
+ 
+--------
+hadoop jar jarfilename 
+
+MR dump can be seen in console 
+
+distcp is used to copy from different clusters
+
+
+------------------------
+
+
+
+
+

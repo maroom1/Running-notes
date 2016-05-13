@@ -1,0 +1,156 @@
+PIG: 
+
+what decides number of mappers -- number of input splits(created when job startup , created by InputFormat , RecordReader creates key/value pairs)
+
+default reducer 1 
+
+partioner - which key has to go to which reducer
+
+yes , we can decide where our mapper output should store
+
+----------
+is apart of ecossystem, 
+to analyse data
+a dataflow lang
+
+
+10 lines of java can be 200 lines of java
+
+pig latin = pig language 
+
+join 
+filter
+sort 
+etc.. 
+
+1/20th of development 
+1/16th of developement time 
+
+
+mapreduce is procedural lang 
+sometimes we need non procedural lang / high level declarative lang
+
+
+why pig? 
+
+java not required 
+can take any data unsturctural , structure, semi structure
+easy to learn, write, read
+extensioble by UDF(user defined fucntions)
+can run very quickly 
+open source 
+filters, joins , orderitng , tuple, bags, maps.. etc are there 
+
+----
+runs on top of hadoop 
+internally converts the pig script into map reduce jobs and run in parallel 
+
+when we have to use 
+
+to process massive datasources 
+time sensitive data loads
+analytical insight through sampling (breaking into small chunks of data or create subset of data)
+whent to use ? 
+cant read videos, audio , raw tex files like pdfs
+complex logic cant do 
+when you can optimise your code 
+when you mapreduce job runs faster then well written pig script
+
+
+apache pug is a platform for analysing large datasets
+
+
+pig processing: (Data needed in HDFS)
+
+1.load command  --> which file to process
+2.all processing commands --> filter,join,order,limit
+3.dump or store 
+  dump --> shoes result onto the console
+  store --> save result to hdfs
+
+yahoo devloped pig
+  
+  
+  data processing 
+  1.data collection
+  2.data preparation -- ETL (Data factory)
+  3.data presentation
+
+ pig script.pig
+ 
+ here we use GRUNT shell
+ 
+ we can embed pig commands in java 
+ 
+ pig -x local = local mode
+ pig  == hadoop mode
+ 
+ pig series of operations or transformations output
+ 
+ 
+ atom/field .`
+ tuple ()
+ bag - collection of tuple {}
+ map  - key value A:B
+ 
+ 
+ pig tab is the default delimiter
+ 
+ for String it is CharArray
+ 
+ when the data is null it is unknown 
+ 
+ pig lating file loaders
+ 
+ binstorage
+ pigstorage it is demiliter
+ textloader
+ cvsloader
+ xmlloader
+ 
+ cogroup operator - we can group multiple datasets\
+ 
+ cogroup A by name,B by name
+ 
+ join also is same as cogroup but join creates flat set of records
+ 
+ and join is a inner join 
+ 
+ Union is to merge two data sets - same number of columns and type
+ 
+ key 			Bag
+ group			filtered records /tuple
+ 
+ pig is alazy evalution
+ 
+ describe
+ ecxplain(logical and physcal plans)
+ illustrate
+ 
+ register <udf>.jar
+ 
+ Eval,Aggregate,Filter Func
+ |
+ |
+ |
+ Load Func
+ |
+ |
+ |
+ Store Func
+ 
+ @override
+ ------exec function-----
+ 
+ org.apache.pig.Eval
+ 
+
+
+
+
+
+
+
+
+
+

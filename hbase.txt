@@ -1,0 +1,218 @@
+
+
+HBase -- nosql DB
+ can be used for row level updates
+ fast random access
+
+to overcome huge data lookup
+
+
+distribvuted DB
+sorted
+Sparse Data store
+Automatic Sharding
+
+------
+
+key-value stores 
+Dynamo (Amazon)
+voldemort(LinkedIn)
+CitrusLeaf
+
+Bigtable Clones (High scalability and speed)
+Cassandra
+HBase
+bIGTABEL
+Hypertable
+
+
+Document Database
+CouchOne
+mangoDb
+TerraStore
+OrientDB
+
+
+Graph Database (High performance)
+FlockDB(Twitter) 
+DEX
+InfoGrid
+Neo4J
+
+CAP (consistancy , avalibilty , partition Tolatabe)
+
+
+it is a column oriented (create n number of column families(group of cols))
+Each row is identified by rowkey
+each row has multiple column families
+
+Hbase shell
+
+start-hbase.sh
+
+hbase.shell
+Hmaster and Qrumpoeer
+
+create 'htest' ,'cf'
+
+put 'htest',r1,'cf:c1', value1
+
+put 'htest',r1,'cf:c2', value2
+
+
+put 'htest',r1,'cf:c3', value3
+
+scan htest
+
+flexible 
+
+joins should be done usinbg PIG/MR etc
+
+horizointal scalability
+good for semi and strucred data
+
+
+No primary and foreign key constrains
+
+we have only rowkwey
+
+Uses of HBase
+
+unstructured data
+high volumes of data 
+column oriented data
+high scalability
+versioned data (we can store values with timestamp, it maintains 3 versions of data)
+generating data from an MR workflow 
+
+-- when not to use 
+
+small number of records
+lacks RDBMS commands
+when < 5 datanotes and replication factor 3
+
+-----
+
+Java API is used in real time to run CRUD operations
+
+zookeeper - co-ordination server
+
+while creating mention atleast one column family
+
+put tablename rowid columnfaimy:col value
+
+when you are changing any table schema , we must disable table
+diable tablename
+alter tbalename NAME=>"col family",VERSIONS=>3
+
+ get and scan will give latest versions of the data
+ get emp emp1 {COLUMN=>'address:city',VERSIONS=>2} // will display all versions of the data
+ 
+ alter emp ,{NAME=> address,METHOD=>DELETE}
+ 
+ HBASE components:
+ 
+ The HBaseMaster(had active and stanby masters)
+ the HRegionServer
+ the HBase Client
+ 
+ table into regions (range of rows)
+ 
+ it is a master -slave architecture
+ 
+ zookeeper is responsible for co-ordinating between masters and slaves
+ 
+ HBase Read and Write
+ 
+ when writing it writes to WAL/Hlog and MemStore
+ 
+ when MemStore is full it flushes it to Disk in 64kb HFiles
+ 
+ one CF may have n number of HFiles
+ 
+ When Reading BlockCache , Memstore and HFiles
+ 
+ be default Region is 256mb
+ 
+ Hbase-site.xml - hbase.hregion.max.filesize (upperbound is 4gb)
+ 
+ zookeeper is a thin program 
+ 
+ ROOT and META stored in regionservers
+ 
+ it contains where the regions are stored 
+ 
+ client interacts with zookeeper
+ 
+ root->meta->regions
+ 
+ compactions --- rewrites----> several files to one files
+ 
+ HBase writes out imuutable files as data added
+ 
+ Major compaction -- rewrite all files to one
+ 
+ 
+ cols has hashmap 
+ Table-> RowKey(unique)->col family -> column -> timestamp
+ HashMap<String,HashMap<String,HashMap<String,String>>>
+HBase client Api
+ Org.apache.hadoop.Hbase.client.Htable
+ 
+ get
+ put
+ etc...
+ =============
+ program---
+ config
+ Htable
+ put
+ put add
+ 
+ table.put()
+ 
+ get
+ Result=table.get()
+ 
+scan
+
+....
+
+======
+HBase Clienty Interfaces
+---------
+
+Configuration
+HBaseAdmin
+HBaseDescriptor
+Htable
+
+zookeeper is a reliable scalable cordinator system
+
+zookeeper -> ZNodes 
+
+zookeeper stores info like tree structure
+
+name service
+locking/synchronization
+configuration management
+Master Election
+
+habse zkcli
+
+ls /
+ls /hbase
+get /hbase/master
+get /hbase/rs
+
+
+
+
+
+
+
+
+
+ 
+
+ 

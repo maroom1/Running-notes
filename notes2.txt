@@ -1,0 +1,36 @@
+Host Name: 139.162.54.153 
+Username – edureka Password - edureka     
+Jps command check all the hadoop processes are running are not
+
+-------
+for edureka ova file edureka and oozie passwords for profiles
+-----
+when having problem take care
+Restart the cluster.
+sudo service hadoop-master stop
+sudo service hadoop-master start
+hadoop dfsadmin -safemode leave
+sudo jps 
+------------
+
+
+
+Command: sudo gedit Desktop/LMS/Oozie/WordCountTest/job.properties
+Command: sudo gedit Desktop/LMS/Oozie/WordCountTest/workflow.xml
+Command: sudo gedit /usr/lib/hadoop-2.2.0/etc/hadoop/core-site.xml
+
+--------------------------------
+
+for oozie  fails 
+
+Command: oozie job -oozie http://localhost:11000/oozie -config
+/home/edureka/Desktop/LMS/Oozie/WordCountTest/job.properties -run
+Error: E0501 : E0501: Could not perform authorization operation, User: edureka is not
+allowed to impersonate edureka
+
+
+Solution: Firstly, stop oozie if it’s running.
+Command: cd /usr/lib/oozie-4.0.0/
+Command: ./bin/oozie-stop.sh
+Three changes needs to be done
+--------------------------------------

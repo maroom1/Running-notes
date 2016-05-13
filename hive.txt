@@ -1,0 +1,212 @@
+Hive in facebook
+
+Tables can be partitioned and bucketed
+schema flexibility and evuloutiuon 
+east to plug in custome mapper/reducer code
+JDBC ODBC drivers avauialbke 
+Hive tables van be defined on HDFS 
+we have formats,functions etc
+
+Datawarehouse built on hadoop
+sql--> HiveQL
+Abstracts complexity of hadoop (no need to understand mapper reducer etc)
+
+Hive application -> Data mining,Document Indexing,Log processing,Customer facing Businees intelligence , predictuve modelling , hypothesis , Testing
+
+pig is used by programmers and researchers
+Hive is used by analysts generating daily reports
+
+Pig is a dataflow lang
+Hive isa sqlish lang
+
+Hive Schema is created and stored externally 
+
+partitions Yes (manual and dynamic)
+Thrift Server (Optional) -- uses jdbc and odbc driver and helps in cross platform communication like java,python
+
+UDF 
+Custom serilalizer,Deserializer () they help us in processing different kind of data like Jason ,xml, etc
+join order sort
+shell
+streaming
+web interface
+JDBC/ODBC
+DFS Direct access (implicit that is need of any job like MR )
+
+
+Hive componenets 
+CLI
+HWI (Web interface)
+Thrift server (cross platform communications)
+Driver
+Metastore(inbuilt default Derby DB )
+Data for the table is in HDFS
+
+----
+
+Life cycle
+shell
+Driver (creates a session , number of inouts)4
+compiler (Where it creates DAG(Translates all statements into it) (Direct acyclic Graphs))
+Execution Engine(hadoop Engine)
+
+----
+Hive Service JVM 
+
+Embedded Metastore (useS Derby)
+Local Metastore (can use Mysql)
+Remote Metastore (can use Mysql)
+
+Schema in read (RDBS is schema on write)
+no transaction, indexes,updates
+primitive types:
+------------
+Boolean
+Tinyint
+smallint
+int
+bigint
+float
+double
+string
+
+complexd types
+Structs (accessed using . notation)
+Maps (unordered ,key(primitive type) ,value)
+ArrAYS (order list ,indexeable lists)
+
+======
+Database
+|
+tables
+|
+partitions
+|
+buckets
+
+======
+
+  user/hive/warehouse -- default location hdfs
+
+show databases;
+
+create table emp()
+row format delimieted
+fields terminated by ',';
+
+data is in local 
+load data loca inpath "/home/edureka/abc.txt" into table emp
+
+if data in hdfs no need to specify 'local'
+
+describe emp
+describe extended emp (detailed info)
+
+all the above are intenal tables (from local system it copies the data 
+
+from HDFS it moves the data)
+
+
+to over come this we create external tables
+
+create external table emp2()
+row ...
+fields......
+location '/mrdata' ; // we have to specify data so that we can map location of data
+
+we dont have to load data 
+
+interal / External
+
+internal 
+   manageedd tables(copies data , all dat will be in warehouse)
+   if you drop : 
+      will delete data from warehouse Direct
+	  will delete datafrom derby
+	  
+External 
+	we specify location for data
+	if you drop 
+		deletes matadata
+		
+PARTITIONS:
+
+insert overwrite directory '/hivetesting' select * from  emp
+
+it gets are the data from query and pust to the HDFS  directory
+MR job runs for it
+
+when you load the same file it copies to the db
+whne you load the wrong file it prints null in the wrong fileds while displaying the table
+
+load overwrite === it deletes full data and load the new file 
+ 
+
+create table emp4(countr ... State ....)
+partitioned by (country String,state String)
+row format delimieted
+fields terminated by ',';
+
+
+describe emp4
+
+ load data local inpath '/hidjash' into table emp4
+partition (country='IN',State='C') 
+
+ partition keys determine how data is stored
+ Each unique value of the partition keys defines a partition of the table
+ partitions are named after dates for convenience
+ 
+ select * from emp4 where dept='HR'  uses MR job
+						state='A' no MR job because the table is partitioned with state 
+Row level deletion is not possible
+
+stored AS textfile
+
+set hive.cli.print.current.db=true // it shows current DB in cli like hive dbname >
+set hive.cli.print.header=true
+
+internal table or managed tables
+
+for dynamic partition : 
+
+set hive.exec.dynamic.partition.mode=nonstrict
+set hive.exec.dynamic.partition=true
+
+set hive.enforce.bucketing=true
+set mapred.reduce.tasks=10
+
+create dynamic partition table 
+load from other like from <table name> <alias name> insert overwrite table parttable partition(<parition col>)
+
+bucketing will be done hash fucntion of some columns of the table
+
+show partitions <part table>
+
+we can drop or add partitions
+add file .python
+
+add jar .jar
+
+create temprrory fuynction 
+
+for writing UDF we have to overide hive UDF
+
+Cross platform communication 
+
+hive --service hiveserver
+
+//Check for internet connection ..
+
+java programm cannot do delete , insert etc... 
+
+$HIVE_PORT=10000 sudo<HIVE_HOME>/bin/hive --service hiveserver
+
+
+
+
+		
+
+  
+ 
+

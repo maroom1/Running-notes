@@ -1,0 +1,147 @@
+  1  sc
+  2  import org.apache.hadoop.fs._
+ 15  val path = new Path("file:/tmp/hive")
+ 16  val lfs = FileSystem.get(path.toUri(), sc.hadoopConfiguration)
+ 17  lfs.getFileStatus(path).getPermission()
+ 34  val textFile=sc.textFile("readme.txt")
+ 35  textFile.first
+ 40  val textFile=sc.textFile("file:///D:/git_work/spark/readme.txt")  --> file has to write like this only file://localhost/(if working with domain)
+ 41  textFile.first
+ 42  def history = scala.io.Source.fromFile(System.getProperty("user.home") + "/.scala_history").foreach(print)
+ 43  history
+ 46  :help
+ 47  :history
+ 49  :history 100
+ :paste --> paste mode cntrl+v 
+ 
+ 
+ sc
+ res0: org.apache.spark.SparkContext = org.apache.spark.SparkContext@3220c28
+ 
+ val textFile=sc.textFile("readme.txt")
+ textFile.first
+ val tokenizedFileData=textFile.flatMap(line=>line.split(" "))
+ val countPrep=tokenizedFileData.map(word=>(word,1))
+ val counts=countPrep.reduceByKey((accumValue,newValue)=>accumValue+newValue)
+ val sortedCounts=counts.sortBy(kvPair=>kvPair._2,false)
+ sortedCounts.saveAsTextFile("file:///D:/git_work/spark/ReadMeWordCount/")
+ tokenizedFileData.countByValue --- it  map reduceByKey
+
+ sbt package
+ --------------- // without arguments
+ D:\git_work\spark\workspace1\WordCount>spark-submit --class "main.WordCount" --master "local[*]" "D:\git_work\spark\workspace1\WordCount\target\scala-2.11\word-counter_2.11-0.1.jar"
+ ---------------------// with arugments 
+spark-submit --class "main.WordCount1" --master "local[*]" "D:\git_work\spark\workspace1\WordCount\target\scala-2.11\word-counter_2.11-0.1.jar" "file:///D:/git_work/spark/readme.txt" "file:///D:/git_work/spark/PluralsightData/ArgWordCount/"
+
+-------------------
+
+for building an sbt appliacation 
+
+build.sbt file is mandatory : which haS DATA as below 
+
+--
+name := "Word Counter"
+
+version := "0.1"
+
+scalaVersion := "2.11.8"
+
+libraryDependencies += "org.apache.spark" % "spark-core_2.11" % "1.6.1"
+--
+
+
+we have to develop programs in src\main\scala folder of eclipse project 
+
+example program : here 
+
+package main
+import org.apache.spark.SparkContext
+import org.apache.spark.SparkConf
+
+object WordCount1 {
+  def main(args: Array[String]) {
+    val conf = new SparkConf().setAppName("Word Count")
+    val sc = new SparkContext(conf)
+    val textFile = sc.textFile(args(0))
+    val tokenizedFileData = textFile.flatMap(line=>line.split(" "))
+    val countPrep = tokenizedFileData.map(word=>(word, 1))
+    val counts = countPrep.reduceByKey((accumValue, newValue)=>accumValue + newValue)
+    val sortedCounts = counts.sortBy(kvPair=>kvPair._2, false)
+    sortedCounts.saveAsTextFile(args(1))
+  }
+}
+
+
+--------
+
+add scala jar to buildpath 
+spark_core-2.11.jar  to buildpath 
+
+--------------
+
+132  sc.parallelize
+
+double tab tab - gives the definition of parallelize 
+
+def parallelize[T](seq: Seq[T], numSlices: Int)(implicit scala.reflect.ClassTag[T]): rdd.RDD[T]
+
+numSlices - if you didnt specify it take default number of cores -- | master local[<numofcores>] |
+
+numSlices is the number of partitions 
+
+133  sc.parallelize(1 to 100)
+
+134  res1.collect
+
+sc.makeRDD
+
+sc.range(1 to 100)
+
+scala> sc.range(1,100,5)
+res7: org.apache.spark.rdd.RDD[Long] = MapPartitionsRDD[4] at range at <console>
+:28
+
+scala> res7.collect
+res8: Array[Long] = Array(1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56, 61, 66,
+71, 76, 81, 86, 91, 96)
+
+scala> sc.range(1,100)
+res9: org.apache.spark.rdd.RDD[Long] = MapPartitionsRDD[6] at range at <console>
+:28
+
+scala> res9.collect
+res10: Array[Long] = Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36
+, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56
+, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76
+, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96
+, 97, 98, 99)
+
+scala> sc.range(1,100,10)
+res11: org.apache.spark.rdd.RDD[Long] = MapPartitionsRDD[8] at range at <console
+>:28
+
+scala> res11.collect
+res12: Array[Long] = Array(1, 11, 21, 31, 41, 51, 61, 71, 81, 91)
+
+scala>sc.range(1,100).collect
+
+
+sc.wholeTextFiles -- accepts directory path
+
+data comes in key val format so we have to import org.apache.hadoop.io._2
+
+sc.hadoopFile
+
+sc.newAPIHadoopFile  |
+sc.hadoopRDD 		 |  difference  is hadoopRDD wont take file path 
+
+
+
+
+
+
+
+
+
+  

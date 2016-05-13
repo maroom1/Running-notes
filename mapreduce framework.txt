@@ -1,0 +1,198 @@
+Mapreduce -> 1.Map Class 2.Reduce class
+
+Map task (rec by rec , number of mappers == number of blocks)
+emp.dat 200mb 10000 rec
+
+(temp or intermediate)output stores in local file system
+
+we can specify in core-site.xml where we can store temp output hadoop.tmp.dir
+
+
+
+
+hadoop frameworks takes all maps output to reducer
+
+
+reduce task (by default it will be 1)
+
+output to hdfs
+
+
+map input      --- key/value    -- k1/v1 given by inputformat
+map output  	--- key/value	-- k2/v2 decided  by developer
+reducer input	--- key/value	--  k2/v2 same as maps output
+reduce output	--- key/value	--  k3/v3 decided by developer
+
+INPUTFORMAT class is responsible for generating key/value for mapper from reading inout files
+
+by default TEXTINPUTFORMAT is inputformat
+
+Key  --> BYTE OFFSET(locatation of character when thenew line is starting
+)
+VAlUE ---> Entire Line (newline delimiter)
+
+Map Logic for word count
+
+read value 
+split words
+write (each word, 1) - list of key/value pairs
+
+hadoop frameworks takes all maps output to reducer
+as
+sorting based on key/value
+prepare list of values for unique key/value (welcome,[1,1])
+
+reduce logic
+read values
+sum all
+write output
+
+
+java primitive 				hadoop wrapper 
+data types					classes
+
+int							IntWritable
+float						FloatWritable
+double						DoubleWritable
+string						Text
+
+1.Driver class (where all configuration related to job we write)
+2.Map class
+3.reduce class
+
+----------------
+old API--
+JobConf conf=new JobConf(wordcpunt.class)
+setOutputkeyclass
+setoutputvalueclass
+we have 4 arugemnts
+setinputformat
+setoutformat   ---> default optional to write
+
+setinput and output path
+
+JobClient.run(conf)
+New API--
+
+JOb jb=new Job()
+jb.setJarByClass(...)
+jb.waitForCompletion(true)
+we have three aruguments
+contex . write ois for output
+part-m = map output
+part-r = reduce output
+
+--------------
+
+k1,v1 -> list(k2,v2)  -> k2,List(v2) -> k3,v3
+
+
+gen 1: fix the mapper and reduceers default 2,200mb
+gen 2: resoiurces ---> containers ( will take care)
+
+setNumReducer=0
+IdentityReducer is default when it is 0 where it 
+converts all output mappers to one output mapper
+inputformat --> TEXTINPUTFORMAT
+	
+inputsplits are logical files (no data) rec by rec ref of data
+
+As a job startup  -> Recordreader  
+
+===========
+COBINER WORKS IN EACH Map OUTPUT
+combiners are mini/semi reducers
+
+
+========
+counters
+dustributed cache  --- it is like map side join
+joins
+
+Custom inputformat
+  -- data will be stored on to disk and read back --- serialize and deserialize ---> which is writable
+  
+Sort keys and compared to prepare input to the reducer  --> which is comparable 
+|
+
+
+
+
+
+
+
+
+|
+~
+WritableComparable interface 
+
+
+
+
+we have to implement writableComparable interface 
+
+
+hadoop jar <jar file name> /inputpath /outputpath
+
+sequential file
+consists of binary key/value pairs
+used in mapreduce as input/output formate that is output of maps
+are stored using sequential file
+These binary files are more compact than text files
+they support compresstion at record level or split level
+file split can be preocessed in parallel
+
+sequential files have three compresstion options
+Uncompressed 
+record compresstion - the value emitted from a mapper or reducer is compressed
+than text files
+Block compresstion - the entire block of key/value pair is compressed
+
+when processing if we cannot split we can use splittable format 
+such as sequentialfile
+
+Tooo many small files is also a problem
+
+java.security.messgaeDigest -- where it is used to generate hash vaue
+
+MRUnit is a testing framework
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

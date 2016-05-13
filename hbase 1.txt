@@ -1,0 +1,153 @@
+function onFormSubmit(e) {
+
+  var timestamp = e.values[0];
+
+  var userName = e.values[1];
+
+  var seatNum = e.values[2];
+
+  var yourName = e.values[3];
+
+  var id = e.values[4];
+
+  var email = e.values[5];
+ // e.values[6]-e.values[15]
+  //e.values[17]-e.values[46]
+  var c=0;
+var d6='"john".equals("john")';
+var d7='public static void main(String args[])';
+var d8='String temp [] = {"a", "b", "c"};';
+var d9='void returns no data type.';
+var d10='All the above';
+var d11=true;
+var d12='Objects do not permit encapsulation';
+var d13='arr.length';
+var d14='obtains memory for a new variable';
+var d15='java';
+var d17='translates java source code to byte code';
+var d18='Package, Import, Class';
+var d19='platform independent';
+var d20='a new class is derived from an existing class';
+var d21='object';
+var d22=9.0;
+var d23='equals()';
+var d24=true;
+var d25=true;
+var d26=false;
+var d27="jvm or java virtual machine";
+var d271="jvm";
+var d272="JVM";
+var d273="java virtual machine";
+
+var d274="Java Virtual Machine";
+  var d28="Java architecture";
+var d29='javac';
+var d30=4.0;
+var d31='compile error';
+var d32='An instance of interface can be created.';
+var d33="adds two Arralist objects";
+
+var d34='Interface';
+var d35='None of the above';
+var d36='entrySet()';
+var d37='put()';
+var d38='apple,peach,guava';
+var d39="system.out.ptintln(h.values());";
+var d40="system.out.ptintln(h.entrySet());";
+var d41='None';
+var d42='Iterator()';
+var d43=true;
+var d44=1.0;
+var d45=false;
+var d46='No';
+  
+  
+  
+if(e.values[6]==d6)
+{c=c+2;s=s+"  1 ";}
+if(e.values[7]==d7)
+{c=c+2;s=s+" 2  ";}
+if(e.values[8]==d8)
+{c=c+2;s=s+" 3  ";}
+if(e.values[9]==d9)
+{c=c+2;s=s+" 4  ";}
+if(e.values[10]==d10)
+{c=c+2;s=s+"  5 ";}
+if(e.values[11]==d11)
+{c=c+2;s=s+"  6 ";}
+if(e.values[12]==d12)
+{c=c+2;s=s+"  7 ";}
+if(e.values[13]==d13)
+{c=c+2;s=s+" 8  ";}
+if(e.values[14]==d14)
+{c=c+2;s=s+"  9 ";}
+if(e.values[15]==d15)
+{c=c+2;s=s+"  10 ";}
+if(e.values[17]==d17)
+{c=c+2;s=s+"  11 ";}
+if(e.values[18]==d18)
+{c=c+2;s=s+"  12 ";}
+if(e.values[19]==d19)
+{c=c+2;s=s+"  13 ";}
+if(e.values[20]==d20)
+{c=c+2;s=s+"  14 ";}
+if(e.values[21]==d21)
+{c=c+2;s=s+"  15 ";}
+if(e.values[22]==d22)
+{c=c+2;s=s+"  16 ";}
+if(e.values[23]==d23)
+{c=c+2;s=s+"  17 ";}
+if(e.values[24]==d24)
+{c=c+2;s=s+"  18 ";}
+if(e.values[25]==d25)
+{c=c+2;s=s+"  19 ";}
+if(e.values[26]==d26)
+{c=c+2;s=s+" 20  ";}
+if(e.values[27]==d27)
+{c=c+2;s=s+"  21 ";}
+if(e.values[28]==d28)
+{c=c+2;s=s+" 22  ";}
+if(e.values[29]==d29)
+{c=c+2;s=s+"  23 ";}
+if(e.values[30]==d30)
+{c=c+2;s=s+" 24  ";}
+if(e.values[31]==d31)
+{c=c+2;s=s+" 25  ";}
+if(e.values[32]==d32)
+{c=c+2;s=s+"  26 ";}
+if(e.values[33]==d33)
+{c=c+2;s=s+" 27  ";}
+if(e.values[34]==d34)
+{c=c+2;s=s+" 28  ";}
+if(e.values[35]==d35)
+{c=c+2;s=s+" 29  ";}
+if(e.values[36]==d36)
+{c=c+2;s=s+" 30  ";}
+if(e.values[37]==d37)
+{c=c+2;s=s+" 31  ";}
+if(e.values[38]==d38)
+{c=c+2;s=s+"  32 ";}
+if(e.values[39]==d39)
+{c=c+2;s=s+"  33 ";}
+if(e.values[40]==d40)
+{c=c+2;s=s+"  34 ";}
+if(e.values[41]==d41)
+{c=c+2;s=s+" 35  ";}
+if(e.values[42]==d42)
+{c=c+2;s=s+" 36  ";}
+if(e.values[43]==d43)
+{c=c+2;s=s+"  37 ";}
+if(e.values[44]==d44)
+{c=c+2;s=s+" 38  ";}
+if(e.values[45]==d45)
+{c=c+2;s=s+"  39 ";}
+if(e.values[46]==d46)
+{c=c+2;s=s+" 40  ";}  
+  
+  var subject = "Fianl Marks ";
+
+  var emailBody = " ";
+ 
+  MailApp.sendEmail(email, subject,emailBody);
+
+}
