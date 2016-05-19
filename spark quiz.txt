@@ -1,0 +1,211 @@
+1.Custom accumulators must follow the associative property.
+
+True 
+
+2.It's possible to compile "a".plus("b") using implicits. (NOTE: plus is NOT a method on the String class)
+
+
+True
+
+3.Which language does Spark NOT currently support?
+
+
+Java
+Scala
+C# ----
+Python
+R
+
+4.RDD1.union(RDD2) is a useful method for combining two RDDs of different sources and acted on uniformly.
+
+True
+
+5.Spark is fast, interactive, and fault tolerant to name a few of its strong points.
+
+True
+
+6.Closed over variables in Spark:
+
+are not allowed
+throw runtime exceptions
+are copied to each worker ---
+are passed by reference to each worker
+
+7.Spark Streaming guarantees that the data will be processed
+
+exactly once. -----
+once or not at all.
+more than once.
+at least once.
+
+8.Files on each executor (via spark-submit --files)
+
+cannot be retrieved, and are only for dependency resolution
+can be retrieved in the code via SparkFiles.get ----
+can be retrieved only if you know the working directory
+
+9.A cluster manager's primary job is:
+
+to manage a Spark application's stages
+making sure no one application uses too many resources
+to manage all of the other machines and the tasks running on them ---
+to spread resource utilization across as many machines as possible
+
+10.Running reduce against an empty RDD:
+
+will not even evaluate
+will throw an UnsupportedOperationException----
+will return an empty RDD
+will return 0
+
+11.Calling cache on an RDD will:
+
+only persist the data when an action is called ---
+persist the data only when persist is called
+immediately persist the data
+throw an exception
+
+12.Spark Streaming standalone applications require the streaming dependency to be explicit.
+
+True
+
+13.The spark context is automatically created as the variable sc in all Spark applications.
+
+False
+
+14.The Spark stand-alone manager cannot be run on a Windows computer.
+
+False
+
+15.A closure is a standalone function which contains at least one bound variable.
+True
+
+16.What is the difference between a transformation and an action with regards to execution?
+
+Transformations are eager; Actions are lazy
+There are no differences
+Transformations run slower than actions
+Transformations are lazy; Actions are eager ---
+
+17.The spark shell can be used against your existing project:
+
+through the class option
+through the jars or py-files option ---
+through the packages option
+never
+
+18.The Spark UI is spun up by the:
+
+spark-ui method
+spark context ---
+spark-submit script
+cluster manage
+
+19.The most generic Hadoop-based loading method is
+
+hadoopFile.
+sequenceFile.
+hadoopRDD --
+textfile
+
+
+20.When map-transforming only the value portion of a key-value, hash-partitioned RDD
+
+map is the only method available.
+mapPartitions is more efficient than map.
+mapValues is more efficient than map. ----
+map is more efficient than mapValues.
+
+21.GraphX's higher level abstraction is a
+DStream
+Graph ---
+GraphRDD
+GraphXRDD
+
+22.Is a tool like Spark always the best fit for a data analytics project?
+
+NO
+
+23.The wrapped variable in a broadcast is:
+
+referenced from the driver
+sent to only one worker
+sent once per execution
+sent once per worker
+
+24.spark-submit is:
+
+a tool used for compiling Spark applications
+a tool used for submitting Spark bugs to JIRA
+a tool that cannot be used for checking Spark application statuses
+a tool primarily used for deploying Spark applications ----
+
+25.The coalesce method is meant for
+either decreasing or increasing the partitions.
+decreasing the partitions
+randomizing the partitions ---
+increasing the partitions
+
+26.Some of the built in algorithms for use with GraphX are
+pageRank, triangleCount, and connectedComponents.---
+graphStats and triangleCount.
+word2Vec and pageRank.
+pageRank, triangleCount, and edgeCount.
+
+27.MLlib's pipeline API is available via the root namespace org.apache.spark.
+ml --
+pipeline
+mllib
+mlbase
+
+28.Associative functions are important
+as they can be combined in any order. ---
+as they must be combined in a specific order.
+as they strengthen the associations between each item.
+
+
+29.The spark-ec2 script allows:
+an ec2 instance to access your local stand-alone manager
+the launching and management of a stand-alone manager in Amazon EC2----
+the launching and management of a Mesos manager in Amazon EC2
+your local spark application to use Amazon EC2 resources
+
+
+30.A transformation method's return type is
+the existing RDD's wrapped type.
+another RDD.---
+scala.Any.
+java.util.Collection.
+java.lang.Object.
+
+31.You should clean your words for machine learning algorithms with custom code.
+False
+
+32.Spark SQL's starting point is
+a SQLContext ---
+a SparkContext
+a SparkSQLContext
+a SchemaRDD
+
+
+33.Once a Spark context is stopped UI visualizations are:
+possible since they're not tied to the context
+no longer possible
+possible via the history server ----
+
+34.The primary abstraction for Spark SQL is:
+an RDD
+an SQLRDD
+a DataFrame---
+a Row
+
+35.SparkContext's textFile method can only load files using a prefix of file:// or hdfs://.
+False
+
+
+
+
+
+
+
+

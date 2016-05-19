@@ -138,10 +138,10 @@ sc.hadoopRDD 		 |  difference  is hadoopRDD wont take file path
 
 
 
+spark-submit --class "main.Evaluator" --master "local[*]" "D:\git_work\spark\Test1\target\scala-2.10\Test1-1.0.jar"
 
 
 
 
-
-
+spark-shell --jars "D:\git_work\spark\Test1\target\scala-2.10\Test1-1.0.jar"
   

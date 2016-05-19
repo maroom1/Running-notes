@@ -48,6 +48,8 @@ all in memory
 
 we can learn one framework instead og many 
 
+
+
 ---------
 
 MR 2004 -> hadoop 2006 -> spark 2009 -> spark paper 2010 ,BSD open source -> incubated amplab 2011 -> databricks 2013 for supporting spark , Apache  -> 2014 apache top level project  
@@ -89,6 +91,7 @@ Spark is lazy evluation
 val textfile = sc.textFile("Readme.md")
 textFile.first
 
+data.distinct == where distinct takes only distinct wore based on hash and equality methods for removing duplicates
 
 sparks makes unit testing more easy than any programming model
 
@@ -245,6 +248,258 @@ saveAsTextFile(path)  = two string method
 External connector == save natively in whatever format you want
 foreach(T=>Unit)
   foreachpartition(Iterator[T]=>Unit)
+  
+Implicit conversions: 
+
+1.plus(1) --- there is no plus method  // gives error to rectify that we have to write explicit function 
+
+case class IntExtensions(value:Int){
+def plus(operand:Int)=value+operand
+}
+
+IntExtensions)(1).plus(1) --- executes 
+
+but which is not more precise ....  to do that we have to import Implicitconversions package
+ 
+import scala.language.implicitConversions
+
+ implicit def inttoIntExtensions(value:Int)={   // give impicit keyword like this
+	IntExtensions(value)
+ }
+
+ 1.plus(1) --- now it will run --- it will search for all implicit methods that matches our paramethertypes
+ 
+ for older version we have to import sparkContext._
+ 
+ RDD implicits 
+ like 
+ doubleRDDtoDoubleRDDFunctions
+ etc
+ 
+ rddtoPaiRrddFucntions ---- python has more functions 
+ pair data 
+ say we have
+ same keys and different vlaues
+ 
+ when we run a pair type operation, all the same type of keys will be partitioned to same node , which is like same key will reside in one parition and in one machine only
+ 
+ key value Methods :
+ 
+ collectAsMap
+ mapValues
+ flatMapvalues
+ reduceBykey (it is a transformation)
+ foldBykey
+ aggregatebykey
+ combineBykey
+ groupByKey
+ countByKey
+ CountApproxDinstinctByKey
+ sampleByKey
+ subtractByKey
+ sortByKey
+
+we have SQL like pairings
+
+and other ones are cogroup and groupWith
+
+pair saving 
+
+SaveAshadoopFile
+saveAsHadoopDataSet
+savaAsSequenceFile( we have in scala and python)
+
+Cache -- 
+
+we can store intermediate data in memeory or disk or both memeory and disk
+cache/persist
+default storageLevel is Memory_Only
+persist(newLevel:SotrageLevel)
+Memory_only 
+Disk_only
+Memory_Only_ser (storing data serialize)
+.....
+OFF_Heap (sored data in jvm heap)
+
+unpersist(blocking:Boolean=true)
+
+Accumulator
+
+to catch the tangential data from the RDD operations like Errors
+
+we have this accumulator
+
+val accumulator = sc.accumulator(0,"Accumulator Name")
+
+accumalor creation and writing will be done only in Driver
+
+cluster Mangers spark maintanence
+------------------------------------
+spark-submit - launches a driver-> main method ---> cluster manager ---> workers
+										|									^|	
+										|_____ driver create RDD and RUNRDD__|
+ 
+spark-submit kill or status can be taken (v 1.3 later )
+
+spark-submit --help
+
+Cluster Manager -- like a distributed kernal -- it is a single machine
+
+manage machines and tasks 
+
+Kernal for monitoring the data center 
+
+Spark cluster managers
+
+basic builtin  stand alone --- --master spark://[HOST]:7077 -- client or cluster modes -- spark.deploy.spreadOut =true/false  // if true the process will distributedly else only in one single machin
+-total-executor-cores # // default to use as many cores as poscible for processing
+-executor-cores
+
+----
+
+ for hadoop it is yarn
+ 
+ --master yarn
+ 
+ Hadoop/YARN_CONF_DIR
+ cline/cluster /  we can give delpoyenment giving -delopyment option after yarn 
+ 
+ -num-executors 2 default 
+-executor-cores
+-queues default
+ 
+ 
+ 
+ -----------
+ another mesos cluster manager 
+ --master mesos://[HOST]:5050
+ client/(cluster)
+ start mesos-dispatch.sh 
+ 
+ it dynamically allocate resources and assign cores
+ spark.mesos.coarse=false 
+ 
+ no spreadOut option
+ 
+ 
+ =========================
+ 
+ spark standalone
+ 
+ $SPARK_HOME
+ conf/slaves
+ 
+ ./sbin/start-all.sh    ssh 
+ 
+ this wont work in windows 
+ to lucnh we have manual start each machine like below 
+ 
+ >bin/spark-class org.apache.spark.deploy.master.Master
+ >bin/spark-class org.apache.spark.deploy.worer.Worker spark://[MASTER]:7077
+ 
+we stop manually 
+	
+conf/spark-env.sh   --> export SPARK_MASTER_OPTS=defaultcores=<values>
+
+--- with amazon 
+cd spark/ec2  --> we need keys 
+python spark_ec2.py --help
+
+spark libraries : 
+
+SQL , Streaming, MLib/Graphx
+
+SPARK SQL: 
+
+it meets sql 92 standardss
+
+datasource can be hive,json,parquet,  etc
+
+optimization
+ predicate push down - optimize engine can check whether we can push filter under 		shuffling operators
+ coumn pruning --  analysers can drop unneccesory columns 
+Uniform API  -- same jvm fro any code 
+Code generation== performance gains 
+sql->RDD->sql
+
+import SqlContext.implicits._
+
+
+----
+registerTempTable 
+
+sql()
+
+we can cache 
+
+and cache lazy
+
+sTREAMNING: 
+
+PRIMARy competiotion is Storm (data can be duplicated , process each item one by one)
+
+
+
+40 time of storm
+prcocess the items as a bacthc called micro batch
+
+kafka  |
+flume  |--> spark streaming ----RDD RDD  RDD ----> spark ----> 
+hdfs   |
+twitter|
+
+
+serialization because of reducing garbage data
+
+default cahcing is memory only 
+
+MLib ;
+
+Matlab , R , mahout,GraphLab
+
+MLib came freom ML ooptimiser -> MLib these help in testing MLib 
+
+org.apache.spark.mlib
+
+breaking , testing, tuning, testing, failure detetection etc 
+
+
+Algorithms : 
+ classification 
+ regression
+ collaborative filtering
+ clustering
+ dimentional reduction 
+Feature Extraction and Transformations
+
+spam filetering, fraud detecting ... 
+
+Graphx 
+
+ It contains verticces ,edges and information realted with vertices  called Triplets
+
+Graphx(VType,EType) --> Graphx(RDD(Vertex),RDD(Edges))  
+EdgeTriplet -- contains all the information about connection 
+
+
+
+
+
+
+
+
+	
+ 
+ 
+
+
+
+
+
+ 
+
+ 
+ 
 
 
 
