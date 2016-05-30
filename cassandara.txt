@@ -1,0 +1,136 @@
+in lunux to check whether the OS is 64 bit click 
+
+getconf LONG_BIT
+top
+df -h
+
+there is no master savel arch .. everything acts as same node 
+snitch - definnes the topology - simplesnitch,dynamicsnitch,partitionsnitch,reackinfesrringsnitch,ec2snitch etc..
+gossip - the way nodes commmunicate
+virtual nodes - where we will assign the token ranges -- 256 nodes maximum
+     able to add new node without making chnages to ranges
+	 
+data is distributed over the cluster ... where over the value of first clumn is truned to hashvalues and fit that  value to one of the node within the range ..
+
+for each node there is a hash value range which is in b/w -2**63 to +2**63
+
+default paritioner is murmur3
+
+bin/cassandra = background mode
+bin/cassandra -f = foreground
+
+bin/nodetool status  -- status of node 
+
+bin/nodetool info -h 127.0.0.1 - specifit info of node
+
+nodetool ring -- gives about the token ranges  each node had 256 token ranges -- 
+
+cassandra.yaml
+
+ps aux|grep cassandra
+
+CQL
+
+before CQl we have Thrift 
+
+JMX(cluster monotoring tool) may be used to monitor clusters
+
+in CQL there are no joins due to distributed nature
+SQL and CQL are almos eq
+
+cqlsh -- where cql commands run
+
+describe cluster;
+Help;
+help create_keyspace;
+exit;
+
+we call DB as keyspace
+
+keyspace ->table 
+
+describe keyspaces;
+describe keyspace system;
+
+create keyspace vehicle_tracker with replication ={ 'class': 'NetwiorkTOpoligyStrategy(where your database cane be spread in different dc)',
+'dc1':3,'dc2':2}; here 3 and 2 is replica number
+
+
+create keyspace vehicle_tracker with replication ={ 'class': SimpleStrategy',
+'replication_factor':1};
+
+we can use tab 
+
+you can use "Vehicle_Tracker" it gives impression of storing as it is
+
+describe keyspaces;
+describe keyspace vehicle_tracker;
+
+drop keyspace vehicle_tracker;
+
+the keyspace can be case sensitive because when we delcare with quotes we have to metion everytime with quotes
+
+
+we have to specify the keypace replication
+
+create table activity(home_id text,
+datetime timestamp,
+event text,
+code_used text,
+primary key(home_id,datetime)) with clustering order by (datetime DESC)
+
+drop table activity;
+
+use home_security; -- keyspace
+
+list,map,set,text,varchar,int, etc datatypes
+
+paritioner key is hashed by the paritioner to determine which node in the cluster will store the partition
+
+partition key is the value in the primary key before first comma which is home_id for example
+
+rowkey and partition key are same 
+
+default we can keep sorted data into table in asc 
+
+desc causing writes slower but reads faster 
+
+alter table activity add status text;
+
+writing to tables
+insert Into commands
+copy 
+sstableloader tool - 
+
+insert into activity(home_id,datetime,event,code_used)values('')
+
+select * from activity;
+
+copy from 
+copy to 
+
+copy activity (home_id,datetime,event,code_used) from 'csv' with header=true and delimiter='|';
+
+header specifiesd the csv files contains header
+
+bin/cassandra-cli which is used by thrift
+to see how data is stored
+
+use home_security;
+list activity;
+
+when data is written to table , it goes both to commit log and memechache
+
+when memcahce is full, the data will be flusdhed to disk(sstable)
+
+sstable is stored in var/lib/cassandra/data
+
+bin/nodetool flush home_security manual flushing of data
+
+bin/sstable2json var/lib/cassandra/data/home_security/activity/jhjhkkjhk.db to view contents of data
+
+
+
+
+
+ 

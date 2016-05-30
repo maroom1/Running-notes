@@ -129,9 +129,9 @@ NO
 23.The wrapped variable in a broadcast is:
 
 referenced from the driver
-sent to only one worker
+sent to only one worker 
 sent once per execution
-sent once per worker
+sent once per worker ----
 
 24.spark-submit is:
 

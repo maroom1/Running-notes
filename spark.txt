@@ -93,6 +93,8 @@ textFile.first
 
 data.distinct == where distinct takes only distinct wore based on hash and equality methods for removing duplicates
 
+sample data would not be sent back to drive 
+
 sparks makes unit testing more easy than any programming model
 
 core API
@@ -485,18 +487,269 @@ EdgeTriplet -- contains all the information about connection
 
 
 
+ The last construct is the Scala object, the singleton static class, such as our FileConverter class and its converToIOObject; again there's some mingling that occurs. So, to use this in Java, we need to take the class name with an appended $ sign, and call its all caps MODULE$ variable. This gives us a final reference that we can use to call our convertToIOObject method directly. Again, not exactly pretty due to the name mangling, but it does the trick.
+ 
+ to use scala in java 
+ 
+ trait IOObject {
+ val file:File
+ val name={
+ file.getName()
+ }
+  }
 
+  hello worlds
+  
 
-
-	
+ java program to use above trait
+ 
+ public class FileObject implements IOObject 
+ {
+ 
+ public File file(){
+ 
+ return localFile;
+ }
+ public String name(){
+ return IOObject$class.name();
+ }
+ 
+ }
  
  
+ ------
+ working with singleton objects ": 
 
-
-
-
-
+ object FileConverter{
  
+ def converToIOObject(file:File) = ...
+ 
+ }
+	||
+	||
+ 
+ in java we have to us Object as 
+ 
+ FileConverter$.MODULE$.converToIOObject(file);
+ 
+
+REPL = read evluate present loop
+
+scalatest library and selecting testing style oof coding 
+
+xUnit(AAA) ----->FunSuite   /// AAA -- Arrange,Act,Assert 
+BDD ----------->FlatSpec //BDD Behaviour driven developemet
+RSpec ------> FlatSuit   //for ruby 
+acceptance ----->FeatureSpec // for acceptance testing
+
+now FileSearcher is codded in BDD 
+
+we have to extend FlatSpec 
+
+FlatSpec is a Scala trait . we can think trait as a abstract class
+
+org.scalatest._   // _ is a wildcard which makes the whole package avalaible to us
+
+== object eqality 
+.eq for ref equality
+
+in java it is vice versa
+
+~test
+
+when an object is created with the same name and in the same file as another class then it 
+is referred to as a companion object 
+
+FilterCheck.scala
+--------------
+class FilterCheck{
+
+}
+object FilterCheckheck{
+
+def apply ()  ==== // create a apply method which creates a instance of FilterCheck 
+}
+
+=========== 
+FilterCheck is a companion object 
+ 
+ 
+infix notation where we remove . (   ) extra make it more expressive clean code 
+
+case class constructor arguments are always public and they always come with comoanion object i.e., which have apply and unapply methods
+
+??? -- not impelented any  --- throws non implemented exceptions	
+case _ -- default one
+
+a method is considered tail recusrive if it calls itself as its a last action
+
+to join single element to list ::
+to join to lists :::
+
+tuple stores 22 diff values
+
+play framework: scala
+
+play 1 2009 written in Java and support scala lib---  ivy --- goal centered and building apps  
+play 2 2012 written in Scala  ----- sbt  ---- focus on building apps that are scalable ,lightweight,satateless asyinchromus immutable approach
+
+
+spark-env.sh -- contains hadoop propertieds 
+
+val sc=new SparkContext(new SparkConf())
+
+spark.speculation = true --- it relunches the slow running tasks , which is called speculation
+
+general RDD functions: 
+cache
+collect
+count
+countByValue
+distinctfileter
+foreach
+persist
+count
+sample
+union
+
+transformations:
+
+map , filter ,intersection, coalease, cogroup
+
+actions:
+reduce,first,foreach,savaAsSequenceFile etc..
+
+pairRDDFunctions: 
+lookup
+mapValues
+CollectAsMap
+
+val doubleRDD= sc.parallelize(Seq(1,4,5,3,23,65,6,64,326,9,745,53,2,2,6,))
+doubleRDD.mean , doubleRDD.sum , doubleRDD.min , dubleRDD.max , doubleRDD.variance 
+
+out of all this operations doubleRDD.stats will print all the above fields
+
+for joins in spark we need key value pairs .. 
+
+joins with partition will increase huge performance.. like 
+the partitioned data will not move only other datasets will move across specified partitions to join 
+
+where as in normal joins both will move and join 
+
+default partitioner is Hashpartitioner 
+
+partitionBy(new HashPartitioner(2)) // 2 is no. of partitions
+-----
+streaingContext(sparkConf,Seconds(15))
+
+ssc.start
+ssc.awaitTermination
+
+terminal cmd nc -lk 9999
+
+it will not remeber the previous streams of data which was caught
+
+streaming is stateless.... where batch 2 dunno about the batch 1 data
+
+ssc.filestream(dir) -- it will catch the new files not the modified one
+
+rolling window --  which is processing the incompleted  datastreams upto that time period
+sliding window --  process the datastreams at that time period
+
+in spark we have window operations 
+
+we have to use reduceByKeyAndWindow(_+_,Seconds(30))  /// this 30 sould be multiples of batch window say 2*15
+
+
+
+checkpointing: for fault tolerance in streaming
+it allows streamging data to be stored locally in hdfs or s3
+
+metadata(incomplete datastreams,Dstream operations,conf) will be store at checkpoints
+
+MLlib
+-------
+alogirithms and utilities , classificagtion, regression,clustering,collaborative filtering , etc... 
+
+spark.mllib -- original lib API built on top of RDD -- 
+spark.ml ---  original highet level API built on top of dataframes for constructing ML pipelines.
+
+Spark ML Concepts:
+DataFrame - ML uses Sql DataFrame as Dataset which can hold variety of datatypes
+Transformer - is an algorithm to transform one dataframe to another dataframe
+Estimator - is an algorithm which van be fit on a dataframe to produce dataframe
+Pipeline - chain of transformers and estimators
+Parameter - parmeters for these transformers and estimators
+
+
+mllib on dataframes is experimental 
+
+ML pipeline  or process
+
+featurization - > training - > Model evalution
+
+
+ML pipeline
+						MLlib
+						|  |
+datasource -> hadoop ->spark ->application
+
+org.apache.spark.mllib.recommendation.ALS
+
+
+
+mysql provides multisession processing ... so avoid derby for running both hql and spark sql 
+
+
+in spark -sql where schema rdd to dataframe  evloved from older to newer version
+
+when you change the metastore of hive to mysql ...  while starting the spark shell you have to load the mysql connector along
+
+val ppl= sc.textFile().toDF
+ppl.show
+
+
+val pplq= sc.read.json()
+pplq.show
+
+pplq.printSchema
+
+pplq.registerTempTable("pplq")
+
+val ppd=SqlContext.sql(select name , age,-- from pplq) // check with sc
+ppd.foreach(println)
+
+sqlContext.parquetFile()
+
+we have to take hive-site.xml from hive/conf to spark/conf--- which eventually connects the spark and hive
+
+accumalors can be added but not subtract/decrease
+
+broadcast values can be sent to all node using broadcast alogarithm ... 
+
+here accumalators wiill be sent back to driver then they will be added
+
+acc.value gives the value of accumulator 
+
+sc.accumalator(0)
+
+first filter then join ,aggregate, cogroup ,
+
+GraphX
+
+for graphs and graph parallel computation
+
+vertex property 
+edge property
+
+
+
+
+
+
+
+
+
 
  
  

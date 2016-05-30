@@ -1,0 +1,167 @@
+scala
+
+statically typed 
+dynamically typed   which is type infered
+
+OOPS 
+funcational programming
+mutabale and immutable features  which is by preference 
+clousers
+functions are first class citizens , same treatment like variable assign,pass like arg to func
+scala supports Actors lib
+
+scala compiler bytecode jvm machine
+spark with scala 
+spark written in scala
+
+Frameworks written in scala
+
+play web development
+spark memory processing
+Akka - Actors based framework
+scalding - Map/reduce
+neo4j - graph database
+
+scala repl is not a scala interpreter : it compiles the program in the back 
+
+scala doest not support primitives and wrapper class
+res0 res1 is scala sessio  variables 
+
+scala is dynamically type infered statically typed lang
+
+val is immutable similar to java final  and read only 
+
+var is mutable read-write 
+
+val x= { val a=10; val b=90}
+
+return type is optional for non-recursive functions 
+
+return type needed for recursive functions
+
+scala allows to assign the default while passing arg
+
+def con(x:int,y:Int=2,z:Int=5)=x+y+z
+con(1) 
+8
+named arugments order is not mandatory
+
+collection 
+Arrays
+Arraybuffers
+maps
+tuples
+lists
+
+Arrays
+
+val n= Array[Int](10)
+
+n(1)
+n
+n(0)=54
+
+by default Map is immutable if you want to add or change values you have to create mutable Map
+
+scala> val x=scala.collection.mutable.Map(1->"a",2->"b")
+x: scala.collection.mutable.Map[Int,String] = Map(2 -> b, 1 -> a)
+
+scala> x(3)="c"
+
+scala> x
+res67: scala.collection.mutable.Map[Int,String] = Map(2 -> b, 1 -> a, 3 -> c)
+
+retun type of block is an expression because series expressions is a block 
+
+setter and getters are created by default 
+access modifier can be private or punlic based on the modifier delcared for variable 
+
+example size variable 
+size is getter 
+size_=  is settere .... obj.size=10 == obj.size_=(10)
+
+THERE ARE TWO types of constructors 
+auxillary --- refered witj this()
+primary  ---- delcalred next to class namwe 
+
+
+traits are interfaces we use extends and with keys words for using taits
+
+class name extends trait with trait2 with trait 2 ,,
+{}
+
+no implements here 
+no override needed when using traits
+
+always a class should be extended first then traits
+
+concrete methods witch has implementation 
+
+val acc= new SavingAcc with coslelog with timelog with shortlog
+
+we associate traits with object level too than class level
+
+trait will go with calling from right to left ... 
+here super keyword follows the delcaration from the above (what we declared at class or object level) 
+
+shortlog super timelog super coslelog
+
+functional programming
+first class funcations which is higher order functions
+immutable and mutable support 
+
+anonymous functions which dont have name 
+
+x=>x*x*x
+x=>if(x==0) 1 else "not equal"
+
+
+====
+some more ex
+(1 to 9).foreach(println)
+(1 to 9).map(x=>x*0.1).toFloat.foreach(x=>println(x)
+(1 to 9).filter(_ %2==0).foreach(println _)
+println((1 to 4).reduceLeft(_ * _))
+println((1 to 4).reduceLeft((x,y)=>x*y)) //24
+
+
+Spark 
+general purpose in memory system
+
+used for fast data analystics
+abstracts api in java ,scala,python,r 
+we have other tools like SQL,MLlib,streaming..
+
+BlinkDb
+Dataframes					 ML Pipeline 
+sparksql    sparkstreaming   MLLib     		Graphx  	    SparkR
+---------------------spark core engine----------------------------
+
+spark can cache and disk persistance 
+supports mesos,yarn,own cluster manager
+
+1.5.2
+lineage = sequence of steps to perform an operation 
+
+in saprk rdd's will point to the reference of lenage , when required it will compute , which is reponsible for fault tolereant
+
+spark is a cluster computing framework 
+
+
+sparkcontext is first thing which will be created by default . 
+in realworld we have to create spark context 
+
+pyspark you have to mention ()  for any method 
+
+
+SPARK MODES
+
+local , client,cluster
+
+
+
+socketTextstream= only new 
+fileStream = only new files
+
+
+

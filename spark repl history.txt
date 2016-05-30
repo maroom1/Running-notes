@@ -138,9 +138,10 @@ sc.hadoopRDD 		 |  difference  is hadoopRDD wont take file path
 
 
 
-spark-submit --class "main.Evaluator" --master "local[*]" "D:\git_work\spark\Test1\target\scala-2.10\Test1-1.0.jar"
+spark-submit --jars file:///D:/git_work/spark/hadoop_spark_jars/1.1.2/hadoop-streaming-1.1.2.jar --class "main.Evaluator" --master "local[*]" "D:\git_work\spark\LanguageEvaluator - PreTransform\target\scala-2.10\language-evaluator_2.10-0.2.jar"
 
 
+mostly there will be jar problem you should overcome that by checking the comptability 
 
 
 spark-shell --jars "D:\git_work\spark\Test1\target\scala-2.10\Test1-1.0.jar"

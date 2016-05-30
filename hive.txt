@@ -203,6 +203,55 @@ java programm cannot do delete , insert etc...
 $HIVE_PORT=10000 sudo<HIVE_HOME>/bin/hive --service hiveserver
 
 
+.hiverc -It is a file containing list of commands needs to run when the hive CLI starts. For example setting the strict mode to be true etc.
+
+The default record delimiter is − \n
+
+And the filed delimiters are − \001,\002,\003
+
+SHOW DATABASES LIKE ‘p.*’
+SHOW PARTITIONS table_name PARTITION(partitioned_column=’partition_value’)
+
+ALTER TABLE table_name
+CHANGE COLUMN new_col  INT
+BEFORE x_col
+
+By using the ENABLE OFFLINE clause with ALTER TABLE atatement.
+
+
+If we set the property hive.exec.mode.local.auto to true then hive will avoid mapreduce to fetch query results.
+
+Table-generating functions (UDTF) .. 
+
+lateral view  and 
+explode  /// it take input as Array or map so -- the output will be array of its own exploding the array to cloumns 
+it cant be nested 
+cant use group by ,cluster by ,distribute by,sort by
+
+lateral view --- takes input as explode then it displays the tables -- it provides access to the virtual table 
+
+for ex; 
+
+a   b
+----------
+1   [a,b,c]
+2	[d,e,f]
+
+select a, values from abovtable lateral view explode(b) aliastab as values;
+
+a values
+1	a
+1	b
+1	c
+2	d
+2	e
+2	f
+
+------
+
+select a,b,col1,col2 from baseTable 
+lateral view UDTF(x) t1 as col1
+lateral view UDTF(col1) t2 as col2
 
 
 		

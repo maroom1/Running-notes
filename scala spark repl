@@ -1,0 +1,1025 @@
+val x= {val a=10;val b=100;b-a}
+this block retrun type is INT and returned to x
+
+val x= {val a=10;val b=100;"ramam"}
+
+scala> a=10
+<console>:28: error: not found: value a
+val $ires6 = a
+             ^
+<console>:25: error: not found: value a
+         a=10
+         ^
+
+scala> 10
+res0: Int = 10
+
+scala> val x= {val a=10;val b=100;b-a}
+x: Int = 90
+
+scala>
+
+scala> x
+res1: Int = 90
+
+scala> x
+x     xml
+
+scala> :t x
+Int
+
+scala> val file=scala.io.Source.fromFile("derby.log")
+file: scala.io.BufferedSource = non-empty iterator
+
+scala> val file=scala.io.Source.fromFile("derby.log").mkString
+file: String =  "Sat May 21 13:02:56 CDT 2016 Thread[main,5,main] Ignored duplic
+ate property derby.module.dataDictionary in jar:file:/C:/Spark/lib/spark-assembl
+y-1.6.1-hadoop2.6.0.jar!/org/apache/derby/modules.properties  Sat May 21 13:02:5
+6 CDT 2016 Thread[main,5,main] Ignored duplicate property derby.module.lockManag
+erJ1 in jar:file:/C:/Spark/lib/spark-assembly-1.6.1-hadoop2.6.0.jar!/org/apache/
+derby/modules.properties  Sat May 21 13:02:56 CDT 2016 Thread[main,5,main] Ignor
+ed duplicate property derby.env.classes.dvfJ2 in jar:file:/C:/Spark/lib/spark-as
+sembly-1.6.1-hadoop2.6.0.jar!/org/apache/derby/modules.properties  Sat May 21 13
+:02:56 CDT 2016 Thread[main,5,main] Ignored duplicate property derby.module.java
+Compiler in jar:file:/C:/Spark/lib/spark-assembly-1.6.1-hadoop2.6.0.jar!/org/...
+
+scala> val file=scala.io.Source.fromFile("nofile.txt").mkString
+java.io.FileNotFoundException: nofile.txt (The system cannot find the file speci
+fied)
+        at java.io.FileInputStream.open0(Native Method)
+        at java.io.FileInputStream.open(FileInputStream.java:195)
+        at java.io.FileInputStream.<init>(FileInputStream.java:138)
+        at scala.io.Source$.fromFile(Source.scala:90)
+		
+		
+scala> lazy val file=scala.io.Source.fromFile("nofile.txt").mkString
+file: String = <lazy>
+
+
+scala> file
+java.io.FileNotFoundException: nofile.txt (The system cannot find the file speci
+fied)
+        at java.io.FileInputStream.open0(Native Method)
+        at java.io.FileInputStream.open(FileInputStream.java:195)
+        at java.io.FileInputStream.<init>(FileInputStream.java:138)
+        at scala.io.Source$.fromFile(Source.scala:90)
+		
+scala> lazy val file=scala.io.Source.fromFile("derby.log").mkString
+file: String = <lazy>
+
+scala> file
+res3: String =  "Sat May 21 13:02:56 CDT 2016 Thread[main,5,main] Ignored duplic
+ate property derby.module.dataDictionary in jar:file:/C:/Spark/lib/spark-assembl
+y-1.6.1-hadoop2.6.0.jar!/org/apache/derby/modules.properties  Sat May 21 13:02:5
+6 CDT 2016 Thread[main,5,main] Ignored duplicate property derby.module.lockManag
+erJ1 in jar:file:/C:/Spark/lib/spark-assembly-1.6.1-hadoop2.6.0.jar!/org/apache/
+
+scala> var x=5
+x: Int = 5
+
+scala> val s=if(x>0 && x<6) 1 else 0
+s: Int = 1
+
+scala> lazy val s=if(x>0 && x<6) 1 else 0
+s: Int = <lazy>
+
+scala> s
+res4: Int = 1
+
+scala> val s=if(x>0 && x<6) "positive" else 0
+s: Any = positive
+
+scala> var args="Hello"
+args: String = Hello
+
+scala> args.foreach(arg=>println(arg))
+H
+e
+l
+l
+o
+
+scala> args.foreach(arg=>print(arg))
+Hello
+scala> val x=args.foreach(arg=>print(arg))
+Hellox: Unit = ()
+
+scala> x
+
+scala> val x=args.foreach(arg=>(arg))
+x: Unit = ()
+
+scala> x
+
+scala> args.foreach(print)
+Hello
+scala> args.foreach(println)
+H
+e
+l
+l
+o
+
+scala> var x= 1 to 5
+x: scala.collection.immutable.Range.Inclusive = Range(1, 2, 3, 4, 5)
+
+scala> x.foreach(println)
+1
+2
+3
+4
+5
+
+scala> x foreach println
+1
+2
+3
+4
+5
+
+scala> val in ="Hello world"
+in: String = Hello world
+
+scala> var sum=0
+sum: Int = 0
+
+scala> for(i<-0 until in.length) sum+=1
+
+scala> sum
+res14: Int = 11
+
+scala> for(i<-0 to 3;j<-1 to 3) println(10*i+J)
+<console>:26: error: not found: value J
+              for(i<-0 to 3;j<-1 to 3) println(10*i+J)
+                                                    ^
+
+scala> for(i<-0 to 3;j<-1 to 3) println(10*i+j)
+1
+2
+3
+11
+12
+13
+21
+22
+23
+31
+32
+33
+
+scala> for(i<-1 to 3;j<-1 to 3) println(10*i+j)
+11
+12
+13
+21
+22
+23
+31
+32
+33
+
+scala> for(i<-1 to 3;j<-1 to 3 if i==j) println(10*i+j)
+11
+22
+33
+
+scala> for(i<-1 to 3;j<-1 to 3 if i<j) println(10*i+j)
+12
+13
+23
+
+scala> for(i<-1 to 3;j<-1 to 3 if i<=j) println(10*i+j)
+11
+12
+13
+22
+23
+33
+
+scala> for(i<-1 to 3;j<-1 to 3 if i>j) println(10*i+j)
+21
+31
+32
+
+scala> for(i<-1 to 3;j<-1 to 3 if i>=j) println(10*i+j)
+11
+21
+22
+31
+32
+33
+
+scala> for(i<-1 to 3;x=4-i;j<-x to 3) println(10*i+j)
+13
+22
+23
+31
+32
+33
+
+scala> for(i<-1 to 3;x=4-i;j<-x to 3) println(10*i+j)
+13
+22
+23
+31
+32
+33
+
+scala> for(i<-1 to 3;x=4-i;j<-x to 3 if i==j) println(10*i+j)
+22
+33
+
+scala> for(i<-1 to 3 if i==1;x=4-i;j<-x to 3 if i==j) println(10*i+j)
+
+scala> for(i<-1 to 3 if i==3;x=4-i;j<-x to 3 if i==j) println(10*i+j)
+33
+
+scala> def con(x:int,y:Int=2,z:Int=5)=x+y+z
+<console>:27: error: not found: type int
+         def con(x:int,y:Int=2,z:Int=5)=x+y+z
+                   ^
+
+scala> def con(x:Int,y:Int=2,z:Int=5)=x+y+z
+con: (x: Int, y: Int, z: Int)Int
+
+scala> con(1)
+res27: Int = 8
+
+scala> con(1,2,3)
+res28: Int = 6
+
+scala> con(1,,3)
+<console>:1: error: illegal start of simple expression
+       con(1,,3)
+             ^
+
+scala> con(x=1,z=3)
+res29: Int = 6
+
+scala> val n= Array[Int](10)
+n: Array[Int] = Array(10)
+
+scala>
+
+scala> n(1)
+java.lang.ArrayIndexOutOfBoundsException: 1
+        at $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:28)
+        at $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:33)
+
+scala> n
+res31: Array[Int] = Array(10)
+
+scala> n(0)=54
+
+n+=45
+res33: Array[Int] = Array(54,45)
+
+scala> n
+res33: Array[Int] = Array(54)
+
+scala> val n= Array[Int](10)
+n: Array[Int] = Array(10)
+
+scala> val n= new Array[Int](10)
+n: Array[Int] = Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+
+scala> n
+res34: Array[Int] = Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+
+scala> n(0)=54
+
+scala> n
+res36: Array[Int] = Array(54, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+
+scala> n.foreach(print)
+54000000000
+scala> n(3)=54
+
+scala> n
+res39: Array[Int] = Array(54, 0, 0, 54, 0, 0, 0, 0, 0, 0)
+
+scala> n.foreach(x=>print(x+" "))
+54 0 0 54 0 0 0 0 0 0
+scala> n.sum
+res41: Int = 108
+
+scala> val st=Array("dfsdf")
+st: Array[String] = Array(dfsdf)
+
+scala> st foreach print
+dfsdf
+scala> import scala.collection.mutable.arrayBuffer
+<console>:25: error: object arrayBuffer is not a member of package scala.collect
+ion.mutable
+         import scala.collection.mutable.arrayBuffer
+                ^
+
+scala> import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.ArrayBuffer
+
+scala> val a =ArrayBuffer[Int]()
+a: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer()
+
+scala> a+=2
+res43: a.type = ArrayBuffer(2)
+
+scala> a+=25
+res44: a.type = ArrayBuffer(2, 25)
+
+scala> a=+25
+<console>:29: error: value =+ is not a member of scala.collection.mutable.ArrayB
+uffer[Int]
+              a=+25
+               ^
+
+scala> a++=25
+<console>:29: error: type mismatch;
+ found   : Int(25)
+ required: scala.collection.TraversableOnce[Int]
+              a++=25
+                  ^
+
+scala> a++=(25)
+<console>:29: error: type mismatch;
+ found   : Int(25)
+ required: scala.collection.TraversableOnce[Int]
+              a++=(25)
+                   ^
+
+scala> a++=Array(25)
+res48: a.type = ArrayBuffer(2, 25, 25)
+
+scala> a++=Array(25,45)
+res49: a.type = ArrayBuffer(2, 25, 25, 25, 45)
+
+scala> a++=Array(25,45,45,243,5634,4534,534,543,45,345,345,345,345,3453,453,45)
+res50: a.type = ArrayBuffer(2, 25, 25, 25, 45, 25, 45, 45, 243, 5634, 4534, 534,
+ 543, 45, 345, 345, 345, 345, 3453, 453, 45)
+
+scala> a+=(66,34,534,330)
+res51: a.type = ArrayBuffer(2, 25, 25, 25, 45, 25, 45, 45, 243, 5634, 4534, 534,
+ 543, 45, 345, 345, 345, 345, 3453, 453, 45, 66, 34, 534, 330)
+
+scala> a.remove(2)
+res52: Int = 25
+
+scala> a.sum
+res53: Int = 18040
+
+scala> a.foreach(print)
+225254525454524356344534534543453453453453453453453456634534330
+scala> a.foreach(print " ")
+<console>:1: error: ')' expected but string literal found.
+       a.foreach(print " ")
+                       ^
+
+scala> a.foreach(x=>print(x+ " "))
+2 25 25 45 25 45 45 243 5634 4534 534 543 45 345 345 345 345 3453 453 45 66 34 5
+34 330
+scala> a.filer(>30)
+<console>:1: error: ')' expected but integer literal found.
+       a.filer(>30)
+                ^
+
+scala> a.filter(>30)
+<console>:1: error: ')' expected but integer literal found.
+       a.filter(>30)
+                 ^
+
+scala> a.filter
+filter      filterNot
+
+scala> a.filter
+                                    def filter(p: A => Boolean): Repr
+
+scala> a.filter(x=>(x>40))
+res56: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer(45, 45, 45, 243,
+5634, 4534, 534, 543, 45, 345, 345, 345, 345, 3453, 453, 45, 66, 534, 330)
+
+scala> a.filter(x=>(x>500))
+res57: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer(5634, 4534, 534,
+543, 3453, 534)
+
+scala> a.filter(x=>(x>500)).map(x*3)
+<console>:31: error: value * is not a member of scala.collection.immutable.Range
+.Inclusive
+              a.filter(x=>(x>500)).map(x*3)
+                                        ^
+
+scala> a.filter(x=>(x>500)).map(x=>x*3)
+res59: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer(16902, 13602, 160
+2, 1629, 10359, 1602)
+
+scala> a.filter(x=>(x>500)).map(x=>x%3)
+res60: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer(0, 1, 0, 0, 0, 0)
+
+
+scala> val mapping=Map(1->"a",2->"b")
+mapping: scala.collection.immutable.Map[Int,String] = Map(1 -> a, 2 -> b)
+
+scala> mapping(1)
+res61: String = a
+
+scala> mapping.get(1)
+res62: Option[String] = Some(a)
+
+scala> mapping.get(1).get
+res63: String = a
+
+scala> mapping.get(1).get.foreach(print)
+a
+scala> mapping.get(1).get.foreach(print)
+a
+scala> val x=scala.collection.mutable.Map(1->"a",2->"b")
+x: scala.collection.mutable.Map[Int,String] = Map(2 -> b, 1 -> a)
+
+scala> x(3)="c"
+
+scala> x
+res67: scala.collection.mutable.Map[Int,String] = Map(2 -> b, 1 -> a, 3 -> c)
+
+scala> mapping(1)="x"
+<console>:29: error: value update is not a member of scala.collection.immutable.
+Map[Int,String]
+              mapping(1)="x"
+              ^
+
+scala> a.filter(x=>(x>500))
+res57: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer(5634, 4534,
+543, 3453, 534)
+
+scala> a.filter(x=>(x>500)).map(x*3)
+<console>:31: error: value * is not a member of scala.collection.immutable.
+.Inclusive
+              a.filter(x=>(x>500)).map(x*3)
+                                        ^
+
+scala> a.filter(x=>(x>500)).map(x=>x*3)
+res59: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer(16902, 13602
+2, 1629, 10359, 1602)
+
+scala> a.filter(x=>(x>500)).map(x=>x%3)
+res60: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer(0, 1, 0, 0,
+
+
+scala> val mapping=Map(1->"a",2->"b")
+mapping: scala.collection.immutable.Map[Int,String] = Map(1 -> a, 2 -> b)
+
+scala> mapping(1)
+res61: String = a
+
+scala> mapping.get(1)
+res62: Option[String] = Some(a)
+
+scala> mapping.get(1).get
+res63: String = a
+
+scala> mapping.get(1).get.foreach(print)
+a
+scala> mapping.get(1).get.foreach(print)
+a
+scala> val x=scala.collection.mutable.Map(1->"a",2->"b")
+x: scala.collection.mutable.Map[Int,String] = Map(2 -> b, 1 -> a)
+
+scala> x(3)="c"
+
+scala> x
+res67: scala.collection.mutable.Map[Int,String] = Map(2 -> b, 1 -> a, 3 ->
+
+scala> mapping(1)="x"
+<console>:29: error: value update is not a member of scala.collection.immut
+Map[Int,String]
+              mapping(1)="x"
+              ^
+
+scala> val tup=(1,2,4,6,5)
+tup: (Int, Int, Int, Int, Int) = (1,2,4,6,5)
+
+scala> tup(0)
+<console>:29: error: (Int, Int, Int, Int, Int) does not take parameters
+              tup(0)
+                 ^
+
+scala> tup._1
+res70: Int = 1
+
+scala> tup._4
+res71: Int = 6
+
+scala> val tup=(1,2,4,6,5,"dfd",4.6,9.9054)
+tup: (Int, Int, Int, Int, Int, String, Double, Double) = (1,2,4,6,5,dfd,4.6
+54)
+
+scala> tup._4
+res72: Int = 6
+
+scala> tup._8
+res73: Double = 9.9054
+
+scala> tup.length
+<console>:29: error: value length is not a member of (Int, Int, Int, Int, I
+tring, Double, Double)
+              tup.length
+                  ^
+
+scala> tup.
+_1                _2                _3                _4
+_5                _6                _7                _8
+asInstanceOf      canEqual          copy              isInstanceOf
+productArity      productElement    productIterator   productPrefix
+toString
+
+scala> val tup1=tup
+tup1: (Int, Int, Int, Int, Int, String, Double, Double) = (1,2,4,6,5,dfd,4.
+054)
+
+scala> tup1.isInstanceOf(tup)
+<console>:31: error: Boolean does not take parameters
+              tup1.isInstanceOf(tup)
+                               ^
+
+scala> "Nfdsf Djmoijf Kjisjf".partition(_.isUpper)
+res76: (String, String) = (NDK,fdsf jmoijf jisjf)
+
+scala> "Nfdsf Djmoijf Kjisjf".partition(_.isUpper)._1
+res77: String = NDK
+
+scala> "Nfdsf Djmoijf Kjisjf".partition(_.isUpper)._2
+res78: String = fdsf jmoijf jisjf
+
+scala> "Nfdsf Djmoijf Kjisjf".partition(_.isLower)._2
+res79: String = N D K
+
+scala> "Nfdsf Djmoijf Kjisjf".partition(_.isLower)
+res80: (String, String) = (fdsfjmoijfjisjf,N D K)
+
+scala> val lst=List(1,2,3,4,5,6)
+lst: List[Int] = List(1, 2, 3, 4, 5, 6)
+
+scala> lst.head
+res81: Int = 1
+
+scala> lst.tail
+res82: List[Int] = List(2, 3, 4, 5, 6)
+
+scala> val lst1=res81+res82
+<console>:32: error: overloaded method value + with alternatives:
+  (x: Double)Double <and>
+  (x: Float)Float <and>
+  (x: Long)Long <and>
+  (x: Int)Int <and>
+  (x: Char)Int <and>
+  (x: Short)Int <and>
+  (x: Byte)Int <and>
+  (x: String)String
+ cannot be applied to (List[Int])
+         val lst1=res81+res82
+                       ^
+
+scala> val lst1=res81++res82
+<console>:32: error: value ++ is not a member of Int
+         val lst1=res81++res82
+                       ^
+
+scala> val lst1=res81:::res82
+<console>:32: error: type mismatch;
+ found   : Int
+ required: List[?]
+         val lst1=res81:::res82
+                       ^
+
+scala> print("list = head+tail")
+list = head+tail
+scala> res81.toList
+<console>:31: error: value toList is not a member of Int
+              res81.toList
+                    ^
+
+scala> res81.
+%              &              *              +              -
+/              >              >=             >>             >>>
+^              asInstanceOf   isInstanceOf   toByte         toChar
+toDouble       toFloat        toInt          toLong         toShort
+toString       unary_+        unary_-        unary_~        |
+
+scala> def sum(l:List[Int]):Int={if (l==Nil)  0 else
+     | l.head+sum(l.tail)}
+sum: (l: List[Int])Int
+
+scala> sum(lst
+     | )
+res85: Int = 21
+
+scala> def sum(l:List[Int]):Int={if (l==Nil)  0 else
+     | l.head+sum(l.tail,acc+l.head)}
+<console>:29: error: too many arguments for method sum: (l: List[Int])Int
+       l.head+sum(l.tail,acc+l.head)}
+                 ^
+
+scala> def sum(l:List[Int]):Int={if (l==Nil)  acc else
+     | l.head+sum(l.tail,(acc+l.head))}
+<console>:28: error: not found: value acc
+         def sum(l:List[Int]):Int={if (l==Nil)  acc else
+                                                ^
+<console>:29: error: too many arguments for method sum: (l: List[Int])Int
+       l.head+sum(l.tail,(acc+l.head))}
+                 ^
+
+scala> def sum1(l:List[Int],acc:Int):Int={if (l==Nil)  acc else
+     | l.head+sum1(l.tail,(acc+l.head))}
+sum1: (l: List[Int], acc: Int)Int
+
+scala> sum1(lst)
+<console>:31: error: not enough arguments for method sum1: (l: List[Int], a
+nt)Int.
+Unspecified value parameter acc.
+              sum1(lst)
+                  ^
+
+scala> sum1(lst,0    /// I thought of writing tail recursion for sum1 becaue of logic. rectified in the last 
+res87: Int = 42
+
+scala> lst
+res88: List[Int] = List(1, 2, 3, 4, 5, 6)
+
+scala> val lst1=List(1,2,3)
+lst1: List[Int] = List(1, 2, 3)
+
+scala> sum(lst1)
+res89: Int = 6
+
+
+                  ^
+
+scala> sum1(lst1,0)
+res91: Int = 12
+
+^
+
+scala> def sum1(l:List[Int],acc:Int):Int={if (l.head==l.tail)  (acc+l.tail
+
+     |
+     |
+You typed two blank lines.  Starting a new command.
+
+                     ^
+sum1: (l: List[Int], acc: Int)Int
+
+scala> def sum1(l:List[Int],acc:Int):Int={if (l.isEmpty)
+     | acc
+     | else
+     | l.head+sum1(l.tail,(acc+l.head))}  // this is wrong
+sum1: (l: List[Int], acc: Int)Int
+
+                  ^
+
+scala> sum1(lst,0)
+res93: Int = 42
+
+scala> sum1(lst1,0)
+res94: Int = 12
+
+scala> 1+lst1.head
+res95: Int = 2
+
+/// tail recursion of example
+			  
+scala> def sum1(l:List[Int],acc:Int):Int={if (l.isEmpty)
+     | acc
+     | else
+     | sum1(l.tail,(acc+l.head))
+     | }
+sum1: (l: List[Int], acc: Int)Int
+
+
+scala> sum1(lst1,0)
+res97: Int = 6
+
+scala> val babyNames = sc.textFile("file:///D:/git_work/spark/Data/Baby_Names.cs
+v")
+babyNames: org.apache.spark.rdd.RDD[String] = file:///D:/git_work/spark/Data/Bab
+y_Names.csv MapPartitionsRDD[45] at textFile at <console>:33
+
+scala> babyNames.count
+res57: Long = 52253
+
+scala> babyNames.first
+res58: String = Year,First Name,County,Sex,Count
+
+scala> val rows = babyNames.map(line => line.split(","))
+rows: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[46] at map at <
+console>:35
+
+scala> rows.map(row => row(2)).distinct.count
+res59: Long = 0
+
+scala> rows.first
+res60: Array[String] = Array(Year, First Name, County, Sex, Count)
+
+scala> rows.(2)
+<console>:1: error: identifier expected but '(' found.
+       rows.(2)
+            ^
+
+scala> rows(2)
+<console>:38: error: org.apache.spark.rdd.RDD[Array[String]] does not take param
+eters
+              rows(2)
+                  ^
+
+scala> rows.first.(2)
+<console>:1: error: identifier expected but '(' found.
+       rows.first.(2)
+                  ^
+
+scala> rows.first(2)
+<console>:38: error: too many arguments for method first: ()Array[String]
+              rows.first(2)
+                        ^
+
+scala> val fr=rows.first
+fr: Array[String] = Array(Year, First Name, County, Sex, Count)
+
+scala> fr(2)
+res63: String = County
+
+scala> rows.map(row => row(2)).distinct
+res64: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[54] at distinct at <c
+onsole>:38
+
+scala> rows.map(row => row(2)).distinct.foreach(print)
+
+scala> rows.map(row => row(2)).take(5)
+res66: Array[String] = Array(County, ST LAWRENCE, ST LAWRENCE, NEW YORK, NEW YOR
+K)
+
+scala> rows.map(row => row(1)).take(5)
+res67: Array[String] = Array(First Name, GAVIN, LEVI, LOGAN, HUDSON)
+
+scala> rows.map(row => row(1)).distinct.count
+res68: Long = 0
+
+scala> val davidRows = rows.filter(row => row(1).contains("DAVID"))
+davidRows: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[65] at fil
+ter at <console>:37
+
+scala> davidRows.count
+res69: Long = 183
+
+scala> davidRows.filter(row => row(4).toInt > 10).count()
+res70: Long = 116
+
+scala> davidRows.filter(row => row(4).toInt > 10).map( r => r(2) ).distinct.coun
+t
+res71: Long = 0
+
+scala> val names = rows.map(name => (name(1),1))
+names: org.apache.spark.rdd.RDD[(String, Int)] = MapPartitionsRDD[72] at map at
+<console>:37
+
+scala> names.first
+res72: (String, Int) = (First Name,1)
+
+scala> names.take(5)
+res73: Array[(String, Int)] = Array((First Name,1), (GAVIN,1), (LEVI,1), (LOGAN,
+1), (HUDSON,1))
+
+scala> names.sample(5)
+<console>:40: error: not enough arguments for method sample: (withReplacement: B
+oolean, fraction: Double, seed: Long)org.apache.spark.rdd.RDD[(String, Int)].
+Unspecified value parameter fraction.
+              names.sample(5)
+                          ^
+
+scala> names.some(5)
+<console>:40: error: value some is not a member of org.apache.spark.rdd.RDD[(Str
+ing, Int)]
+              names.some(5)
+                    ^
+
+scala> names.
+++                         aggregate
+asInstanceOf               cache
+cartesian                  checkpoint
+coalesce                   collect
+compute                    context
+count                      countApprox
+countApproxDistinct        countByValue
+countByValueApprox         dependencies
+distinct                   filter
+filterWith                 first
+flatMap                    flatMapWith
+fold                       foreach
+foreachPartition           foreachWith
+getCheckpointFile          getNumPartitions
+getStorageLevel            glom
+groupBy                    id
+intersection               isCheckpointed
+isEmpty                    isInstanceOf
+iterator                   keyBy
+localCheckpoint            map
+mapPartitions              mapPartitionsWithContext
+mapPartitionsWithIndex     mapPartitionsWithSplit
+mapWith                    max
+min                        name
+name_=                     partitioner
+partitions                 persist
+pipe                       preferredLocations
+randomSplit                reduce
+repartition                sample
+saveAsObjectFile           saveAsTextFile
+setName                    sortBy
+sparkContext               subtract
+take                       takeOrdered
+takeSample                 toArray
+toDebugString              toJavaRDD
+toLocalIterator            toString
+top                        treeAggregate
+treeReduce                 union
+unpersist                  zip
+zipPartitions              zipWithIndex
+zipWithUniqueId
+
+scala> names.sample
+<console>:40: error: missing arguments for method sample in class RDD;
+follow this method with `_' if you want to treat it as a partially applied funct
+ion
+              names.sample
+                    ^
+
+scala> names.sample
+
+def sample(withReplacement: Boolean, fraction: Double, seed: Long): RDD[T]
+
+scala> names.sample(.01)
+<console>:40: error: not enough arguments for method sample: (withReplacement: B
+oolean, fraction: Double, seed: Long)org.apache.spark.rdd.RDD[(String, Int)].
+Unspecified value parameter fraction.
+              names.sample(.01)
+                          ^
+
+scala> names.sample(5,.01)
+<console>:40: error: type mismatch;
+ found   : Int(5)
+ required: Boolean
+              names.sample(5,.01)
+                           ^
+
+scala> names.takeSample(5)
+<console>:40: error: not enough arguments for method takeSample: (withReplacemen
+t: Boolean, num: Int, seed: Long)Array[(String, Int)].
+Unspecified value parameter num.
+              names.takeSample(5)
+                              ^
+
+scala> names.sample(false,.01)
+res80: org.apache.spark.rdd.RDD[(String, Int)] = PartitionwiseSampledRDD[73] at
+sample at <console>:40
+
+scala> names.sample(false,.01).collect
+res81: Array[(String, Int)] = Array((JACKSON,1), (HADASSAH,1), (ELIZABETH,1), (C
+RISTIAN,1), (NOEL,1), (FRANCESCA,1), (ARIA,1), (SCARLETT,1), (LYDIA,1), (EMMA,1)
+, (LUKAS,1), (SAMANTHA,1), (DECLAN,1), (MADELINE,1), (GRACE,1), (CHARLOTTE,1), (
+CHASE,1), (YEHUDA,1), (RYAN,1), (JACOB,1), (MOHAMMAD,1), (JAYCE,1), (DENZEL,1),
+(MAXIMUS,1), (AMADOU,1), (AVRAHAM,1), (JEFFREY,1), (RUSSELL,1), (LEVI,1), (AVERY
+,1), (HUNTER,1), (LIPA,1), (BRAYDEN,1), (RILEY,1), (AMY,1), (MADISON,1), (NINA,1
+), (PESSY,1), (MYA,1), (EMMA,1), (ELIJAH,1), (CHRISTIAN,1), (JAKE,1), (LYDIA,1),
+ (MACKENZIE,1), (BRYCE,1), (DANIELLA,1), (SOPHIA,1), (CHASE,1), (GAVIN,1), (MIGU
+EL,1), (ROSE,1), (RILEY,1), (JOY,1), (JAKE,1), (HELEN,1), (BLAKE,1), (BRIANNA,1)
+, (SANAA,1), (JULIANA,1), (WILLIAM,1), (WYATT,1), (NATHANIEL,1), (RYAN,1), (E...
+
+scala> names.sample(false,.01).take(5)
+res82: Array[(String, Int)] = Array((FARAH,1), (PENELOPE,1), (TYLER,1), (DONOVAN
+,1), (YAKOV,1))
+
+scala> names.sample(true,.01).take(5)
+res83: Array[(String, Int)] = Array((ELI,1), (MADELYN,1), (SHIRA,1), (PHOENIX,1)
+, (SARAH,1))
+
+scala> names.sample(true,.01).take(5)
+res84: Array[(String, Int)] = Array((ADELE,1), (JASE,1), (EMELY,1), (RYAN,1), (R
+YAN,1))
+
+scala> names.sample(false,.01).take(5)
+res85: Array[(String, Int)] = Array((JACK,1), (TRINITY,1), (DANIEL,1), (ALEXANDE
+R,1), (PENELOPE,1))
+
+scala> names.sample(false,.01).take(5)
+res86: Array[(String, Int)] = Array((ADRIANNA,1), (JOHN,1), (RYAN,1), (MARY,1),
+(ANABELLE,1))
+
+scala> names.sample(false,.01,1234).take(5)
+res87: Array[(String, Int)] = Array((HANNA,1), (LYLA,1), (WINNIE,1), (DYLAN,1),
+(SOFIA,1))
+
+scala> names.sample(false,.01,1234).take(5)
+res88: Array[(String, Int)] = Array((HANNA,1), (LYLA,1), (WINNIE,1), (DYLAN,1),
+(SOFIA,1))
+
+scala> names.sample(true,.01,1234).take(5)
+res89: Array[(String, Int)] = Array((HANNA,1), (AHUVA,1), (GIANLUCA,1), (JAMESON
+,1), (ROCCO,1))
+
+scala> names.sample(true,.01,1234).take(5)
+res90: Array[(String, Int)] = Array((HANNA,1), (AHUVA,1), (GIANLUCA,1), (JAMESON
+,1), (ROCCO,1))
+
+scala> sc.parallelize(List(1,2,3)).flatMap(x=>List(x,x,x)).collect
+res98: Array[Int] = Array(1, 1, 1, 2, 2, 2, 3, 3, 3)
+
+scala> sc.parallelize(List(1,2,3)).map(x=>List(x,x,x)).collect
+res99: Array[List[Int]] = Array(List(1, 1, 1), List(2, 2, 2), List(3, 3, 3))
+
+scala> val sampleData = 1to 1000
+<console>:1: error: Invalid literal number
+       val sampleData = 1to 1000
+                        ^
+
+scala> val sampleData = 1 to 1000
+sampleData: scala.collection.immutable.Range.Inclusive = Range(1, 2, 3, 4, 5, 6,
+ 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
+, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47
+, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67
+, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87
+, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105,
+106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121,
+122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137,
+138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153,
+154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 16...
+
+scala> val totData=sc.parallelize(sampleData)
+totData: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[0] at parallelize
+ at <console>:29
+
+scala> val res=totData.filter(x=>x%2==0)
+res: org.apache.spark.rdd.RDD[Int] = MapPartitionsRDD[1] at filter at <console>:
+31
+
+scala> val res=totData.filter(_%2==0)
+res: org.apache.spark.rdd.RDD[Int] = MapPartitionsRDD[2] at filter at <console>:
+31
+
+scala> printf("RDD are lazy that why they wont eval")
+RDD are lazy that why they wont eval
+scala> printf("transfermations are always lazy")
+transfermations are always lazy
+scala> result.collect
+<console>:26: error: not found: value result
+              result.collect
+              ^
+
+scala> res.collect
+[Stage 0:>                                                          (0 + 0) / 4]
+[Stage 0:>                                                          (0 + 4) / 4]
+
+res3: Array[Int] = Array(2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30,
+ 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70,
+ 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108
+, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 130, 132, 134, 136, 138, 140
+, 142, 144, 146, 148, 150, 152, 154, 156, 158, 160, 162, 164, 166, 168, 170, 172
+, 174, 176, 178, 180, 182, 184, 186, 188, 190, 192, 194, 196, 198, 200, 202, 204
+, 206, 208, 210, 212, 214, 216, 218, 220, 222, 224, 226, 228, 230, 232, 234, 236
+, 238, 240, 242, 244, 246, 248, 250, 252, 254, 256, 258, 260, 262, 264, 266, 268
+, 270, 272, 274, 276, 278, 280, 282, 284, 286, 288, 290, 292, 294, 296, 298, 300
+, 302, 304, 306, 308, 310, 312, 314, 316, 318, 320, 322, 324, 326, 328, 330, ...
+
+
+pyspark:
+
+C:\Users\YalamandaRao>pyspark
+Python 2.7.10 (default, May 23 2015, 09:44:00) [MSC v.1500 64 bit (AMD64)] on wi
+n32
+Type "help", "copyright", "credits" or "license" for more information.
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /__ / .__/\_,_/_/ /_/\_\   version 1.6.1
+      /_/
+
+Using Python version 2.7.10 (default, May 23 2015 09:44:00)
+SparkContext available as sc, HiveContext available as sqlContext.
+>>> textF=sc.textFile("file:///D:/git_work/spark/data/text.txt")
+>>> textF.count
+<bound method RDD.count of file:///D:/git_work/spark/data/text.txt MapPartitions
+RDD[1] at textFile at NativeMethodAccessorImpl.java:-2>
+>>> textF.count()
+[Stage 0:>                                                          (0 + 2) / 2]
+
+11
+>>> textF
+file:///D:/git_work/spark/data/text.txt MapPartitionsRDD[1] at textFile at Nativ
+eMethodAccessorImpl.java:-2
+>>> textF.first
+<bound method RDD.first of file:///D:/git_work/spark/data/text.txt MapPartitions
+RDD[1] at textFile at NativeMethodAccessorImpl.java:-2>
+>>> textF.first()
+u'fdsafkl lknkn ln  '
+>>> quit()
+
+C:\Users\YalamandaRao>SUCCESS: The process with PID 3832 (child process of PID 9
+548) has been terminated.
+SUCCESS: The process with PID 9548 (child process of PID 9412) has been terminat
+ed.
+SUCCESS: The process with PID 9412 (child process of PID 11624) has been termina
+ted.
