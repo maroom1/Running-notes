@@ -1,0 +1,63 @@
+val rdd1 =  sc.parallelize(
+                     List(
+                        "yellow",   "red",
+                        "blue",     "cyan",
+                        "black"
+                    ),
+                     3
+               )
+
+
+val mapped =   rdd1.mapPartitionsWithIndex{
+                        // 'index' represents the Partition No
+                        // 'iterator' to iterate through all elements
+                        //                         in the partition
+                        (index, iterator) => {
+                           println("Called in Partition -> " + index)
+                           val myList = iterator.toList
+                           // In a normal user case, we will do the
+                           // the initialization(ex : initializing database)
+                           // before iterating through each element
+                           myList.map(x => x + " -> " + index).iterator
+                        }
+                   }
+
+
+val inputrdd = sc.parallelize(Seq(
+                         ("maths", 50), ("maths", 60),
+                         ("english", 65),
+                         ("physics", 66), ("physics", 61), ("physics", 87),
+("maths", 28), ("maths", 95),
+                         ("english", 87),
+                         ("physics", 98), ("physics", 36), ("physics", 99)
+), 
+                         3)
+
+
+val reduced = inputrdd.combineByKey(
+          (mark) => {
+            println(s"Create combiner -> ${mark}")
+            (mark, 1)
+          },
+          (acc: (Int, Int), v) => {
+            println(s"""Merge value : (${acc._1} + ${v}, ${acc._2} + 1)""")
+            println((acc._1 + v)+"----------------Merge val-------------"+ (acc._2 + 1))
+            (acc._1 + v, acc._2 + 1)
+
+          },
+          (acc1: (Int, Int), acc2: (Int, Int)) => {
+            println(s"""Merge Combiner : (${acc1._1} + ${acc2._1}, ${acc1._2} + ${acc2._2})""")
+println((acc1._1 + acc2._1)+"----------------Merge combi-------------"+ (acc1._2 + acc2._2))
+            (acc1._1 + acc2._1, acc1._2 + acc2._2)
+          }
+      )
+
+
+reduced.collect
+
+val result = reduced.mapValues(x => x._1 / x._2.toFloat)
+
+result.collect
+
+
+

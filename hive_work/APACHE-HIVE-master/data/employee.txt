@@ -1,0 +1,4 @@
+1,Yoav,1000,pombadita 20
+2,Eiyar,2000,pombadita 20
+3,Zohari,3000,pombadita 20
+4,Etan,400,pombadita 20

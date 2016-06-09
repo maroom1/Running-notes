@@ -1,0 +1,350 @@
+sudo
+hive
+show databases;
+create database testhivedb;
+--hadoop dfs -mkdir /DBFilestest
+--hadoop dfs -copyFromLocal /home/edureka/Desktop/LMS/hive/hivedbtestfiles/txns1.txt /DBFilestest/
+use testhivedb; 
+create table txnrecords(txn INT,txndate STRING,custno INT,amount DOUBLE,category STRING,product STRING,city STRING,state STRING,spendby STRING) row format delimited fields terminated by ',' stored as textfile;
+describe txnrecords;
+show tables;  
+load data inpath '/DBFilestest/txns1.txt' overwrite into table txnrecords;
+create table customer(custno string,firstname string,lastname string,age int,profession string) row format delimited fields terminated by ',';
+load data local inpath '/home/edureka/Desktop/LMS/hive/hivedbtestfiles/custs' into table customer;
+select * from customer;
+select * from txnrecords;
+select count(*) from txnrecords;
+---hadoop dfs -mkdir /DBFilestest/ExternalDB/
+---hadoop dfs -mkdir /DBFilestest/ExternalDB/DB1/
+---hadoop dfs -copyFromLocal /home/edureka/Desktop/LMS/hive/hivedbtestfiles/custs /DBFilestest/ExternalDB/DB1/
+create external table example_customer(custno string,firstname string,lastname string,age int,profession string) row format delimited fields terminated by ',' location '/DBFilestest/ExternalDB/DB1/';
+Insert---
+from customer cus insert overwrite table example_customer select cus.custno,cus.firstname,cus.lastname,cus.age,cus.profession;
+*->INSERT OVERWRITE is used to overwrite the existing data in the table or partition.
+*->INSERT INTO is used to append the data into existing data in a table. (Note: INSERT INTO syntax is work from the version 0.8)
+create table txnrecsByCat(txn INT,txndate STRING,custno INT,amount DOUBLE,product STRING,city STRING,state STRING,spendby STRING) partitioned by (category string) clustered by (state) into 10 buckets row format delimited fields terminated by ',' stored as textfile;
+from txnrecords txn insert overwrite table txnrecsByCat partition(category) select  txn.txn,txn.txndate,txn.custno,txn.amount,txn.product,txn.city,txn.state,txn.spendby,txn.category;
+set hive.exec.dynamic.partition=true;
+set hive.exec.dynamic.partition.mode=nonstrict;
+from txnrecords txn insert overwrite table txnrecsByCat partition(category) select   <--same commad as above we have to enable dynamic partition-> txn.txn,txn.txndate,txn.custno,txn.amount,txn.product,txn.city,txn.state,txn.spendby,txn.category;
+SET hive.exec.max.dynamic.partitions=100000;
+SET hive.exec.max.dynamic.partitions.pernode=100000;
+select count(*) from txnrecords;  
+select count(*) from txnrecsbycat;
+drop table customer;
+show tables;
+select count(distinct category) from txnrecsbycat;
+select category,sum(amount) from txnrecsbycat group by category;
+select category,sum(amount) from txnrecords group by category; 
+select count(distinct category) from txnrecords;                
+create table catbyamt as select category,sum(amount) from txnrecsbycat group by category;
+describe catbyamt;
+select custno, sum(amount) as tot from txnrecords [group by custno] [order by tot [desc]] limit 10;
+create table out1 (custno int,firstname string,age int,profession string,amount double,product string) row format delimited fields terminated by ',';
+insert overwrite table out1 select a.custno,a.firstname,a.age,a.profession,b.amount,b.product from customer a JOIN txnrecords b ON a.custno = b.custno;     
+select * from out1 limit 100;
+create table out2 (custno int,firstname string,age int,profession string,amount double,product string, level string) row format delimited fields terminated by ',';   
+insert overwrite table out2
+select * , case
+ when age<30 then 'low'
+ when age>=30 and age < 50 then 'middle'
+ when age>=50 then 'old' 
+ else 'others'
+end
+from out1;
+select * from out2 limit 100; 
+describe out2;  
+create table out3 as select level,sum(amount) from out2 group by level;
+****emp.txt
+****swetha,250000,Chennai
+****anamika,200000,Kanyakumari
+****tarun,300000,Pondi
+****anita,250000,Selam
+****email.txt
+****swetha,swetha@gmail.com
+****tarun,tarun@edureka.in
+****nagesh,nagesh@yahoo.com
+****venkatesh,venki@gmail.com
+create table employee(name string, salary float,city string) row format delimited fields terminated by ',';
+load data local inpath '/home/edureka/Desktop/LMS/HIVE_MINE/emp.txt' into table employee;
+select * from employee where name='tarun';
+create table mailid (name string, email string) row format delimited fields terminated by ',';
+load data local inpath '/home/edureka/Desktop/LMS/HIVE_MINE/email.txt' into table mailid;
+select a.name,a.city,a.salary,b.email from employee a join mailid b on a.name = b.name;
+select a.name,a.city,a.salary,b.email from employee a left outer join mailid b on a.name = b.name;
+select a.name,a.city,a.salary,b.email from employee a right outer join mailid b on a.name = b.name;
+select a.name,a.city,a.salary,b.email from employee a full outer join mailid b on a.name = b.name;
+ADD JAR /home/edureka/Desktop/LMS/hive/HIVE_Codes/myudfs.jar;
+CREATE DATABASE healthDB;
+USE healthDB;
+CREATE TABLE healthCareSampleDS (PatientID INT, Name STRING, DOB STRING, PhoneNumber STRING, EmailAddress STRING, SSN STRING, Gender STRING, Disease STRING, weight FLOAT) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',';
+LOAD DATA LOCAL INPATH '/home/edureka/Desktop/LMS/hive/HIVE_Codes/txns' INTO table healthCareSampleDS;
+CREATE TEMPORARY FUNCTION deIdentify AS 'myudfs.Deidentify';
+CREATE TABLE healthCareSampleDSDeidentified AS SELECT PatientID, deIdentify(Name), deIdentify(DOB), deIdentify(PhoneNumber), deIdentify(EmailAddress), deIdentify(SSN), deIdentify(Gender), deIdentify(Disease), deIdentify(weight) FROM healthCareSampleDS;describe formatted healthcaresampleds;            
+describe formatted healthCareSampleDSDeidentified;            
+!pwd;
+!ls;
+source hqtemp.hql
+ip_country_hits
+
+CREATE TABLE if not exists ipc(ip string,country string)
+ COMMENT 'This is the ip cpuntry hits poc table without partition'
+ ROW FORMAT DELIMITED
+   FIELDS TERMINATED BY '\t' lines terminated by '\n'
+STORED AS textfile;
+
+load data local inpath '${env:HOME}/hive_inputs/ip_country_hits/ip_to_country.txt' overwrite into table ipc;
+
+CREATE TABLE if not exists ipc_part_cnt(ip string)
+ COMMENT 'This is the ip cpuntry hits poc table with  partition country wise'
+PARTITIONED BY(country string)
+ ROW FORMAT DELIMITED
+   FIELDS TERMINATED BY '\t' lines terminated by '\n'
+STORED AS textfile;
+
+insert overwrite table ipc_part partition(country) select * from ipc;
+
+
+weblog_entries.txt
+
+CREATE TABLE if not exists ipc_weblog(id string,url string,dt_created string,tm_created string,ip string)
+ COMMENT 'This is the ip cpuntry hits weblog file poc table without partition'
+ ROW FORMAT DELIMITED
+   FIELDS TERMINATED BY '\t' lines terminated by '\n'
+STORED AS textfile;
+
+load data local inpath '${env:HOME}/hive_inputs/ip_country_hits/weblog_entries.txt' overwrite into table ipc_weblog;
+
+CREATE TABLE if not exists ipc_weblog_part_ip(id string,url string,dt_created string,tm_created string)
+ COMMENT 'This is the ip cpuntry hits weblog poc table with  partition ip wise'
+PARTITIONED BY(ip string)
+ ROW FORMAT DELIMITED
+   FIELDS TERMINATED BY '\t' lines terminated by '\n'
+STORED AS textfile;
+
+insert overwrite table ipc_weblog_part_ip partition(ip) select * from ipc_weblog;
+
+select ip , count(url) from ipc_weblog_part_ip group by ip;
+
+select a.country, count(b.url) as cnt from ipc_weblog_part_ip b join ipc_part_cnt a where b.ip = a.ip  group by a.country;
+
+
+create table temp(ip string,cnt int);
+
+create table ipc_problem2(ip string,cnt int)
+PARTITIONED BY(country string)
+ ROW FORMAT DELIMITED
+   FIELDS TERMINATED BY '\t' lines terminated by '\n'
+STORED AS textfile;
+
+
+insert overwrite table ipc_problem2 partition(country) select  a.ip , count(url) as cnt, country from ipc_weblog_part_ip a join ipc_part_cnt b on a.ip=b.ip group by a.ip , country order by cnt desc  limit 20;
+
+
+select concat_ws(':',cast(hour(tm_created) as string),cast(minute(tm_created) as string)) from ipc_weblog;
+
+
+
+create view  min_day_vw as
+select concat(dt_created,' ', concat_ws(':',cast(hour(tm_created) as string),cast(minute(tm_created) as string))) as min_day,a.ip,country from ipc_weblog a join ipc_part_cnt b on a.ip=b.ip;
+
+
+select min_day,count(ip) as cnt,country from min_day_vw group by min_day,country order by cnt desc limit 20; 
+
+select country,count(ip) as cnt from min_day_vw where min_day ='2012-05-10 21:17' group by country order by cnt desc;
+
+
+create database poc;
+
+use poc;
+
+CREATE TABLE if not exists eventlog(dt_created string, ip string,country string,status string)
+ COMMENT 'This is the event log poc table without partition'
+ ROW FORMAT DELIMITED
+   FIELDS TERMINATED BY '|' lines terminated by '\n'
+STORED AS textfile;
+
+
+show tables;
+
+
+load data local inpath '${env:HOME}/hive_inputs/server_logs/eventlog' overwrite into table eventlog_part;
+
+
+CREATE TABLE if not exists eventlog_partdt_created string, ip string)
+ COMMENT 'This is the event log poc table with partition'
+ PARTITIONED BY(country string,status string)
+ ROW FORMAT DELIMITED
+   FIELDS TERMINATED BY '|' lines terminated by '\n'
+STORED AS textfile;
+
+insert overwrite table eventlog_part partition(country,status) select * from eventlog;
+
+set hive.exec.dynamic.partition.mode=nonstrict;
+
+set hive.exec.max.dynamic.partitions.pernode=10000;
+
+set hive.exec.max.dynamic.partitions=10000;	
+
+error.. default partitions is 100
+
+CREATE TABLE if not exists eventlog_part_ex(dt_created string, ip string)
+ COMMENT 'This is the event log poc table with partition'
+ PARTITIONED BY(country string,status string)
+ ROW FORMAT DELIMITED
+   FIELDS TERMINATED BY '|' lines terminated by '\n'
+STORED AS textfile;
+
+load data local inpath '${env:HOME}/hive_inputs/server_logs/eventlog' overwrite into table eventlog_part_ex partition(country,status);
+FAILED: SemanticException org.apache.hadoop.hive.ql.metadata.HiveException: country not found in table's partition spec: {country=null, status=null}
+
+hive> load data local inpath '${env:HOME}/hive_inputs/server_logs/eventlog' overwrite into table eventlog_part_ex_cntry partition(country='FR',status='SUCCESS'); IT IS LOADING all the data correctly
+
+
+insert overwrite table eventlog_part_ex partition(country,status) select dt_created,ip,country,status from eventlog;
+
+select country,status,count(status) from eventlog_part_ex where status='SUCCESS' group by country,status; //here 1 mapreduce
+
+insert overwrite local directory '/home/hadoop/work/hive_inputs/eventlog' select country,status,count(status) from eventlog_part_ex group by country,status;
+
+insert overwrite local directory '/home/hadoop/work/hive_inputs/eventlog/1.out' select country,count(status) from eventlog_part_ex group by country;
+
+
+select country,status,count(status) as cnt from eventlog_part_ex where status='SUCCESS' group by country,status ORDER by cnt desc LIMIT 1;
+here 2 mapreducers
+
+create database if not exists kalyanpoc;
+
+use kalyanpoc;
+
+add jar ${env:HIVE_HOME}/lib/hive-contrib-0.10.0.jar;
+
+drop table weblogs;
+
+CREATE TABLE weblogs(
+   host STRING,
+   identity STRING,
+   user STRING,
+   time STRING,
+   request STRING,
+   status STRING,
+   size STRING,
+   referer STRING,
+   agent STRING)
+   ROW FORMAT SERDE 'org.apache.hadoop.hive.contrib.serde2.RegexSerDe'
+   WITH SERDEPROPERTIES (
+ "input.regex" = "([^ ]*) ([^ ]*) ([^ ]*) (-|\\[[^\\]]*\\]) ([^ \"]*|\"[^\"]*\") (-|[0-9]*) (-|[0-9]*)(?: ([^ \"]*|\".*\") ([^ \"]*|\".*\"))?",
+ "output.format.string" = "%1$s %2$s %3$s %4$s %5$s %6$s %7$s %8$s %9$s"
+)
+STORED AS TEXTFILE;
+
+load data local inpath '/home/hadoop/work/kalyan_hadoop_pocs/weblogs/weblogs.txt' overwrite into table weblogs;
+
+select * from weblogs limit 100;
+
+set hive.exec.dynamic.partition=true;
+set hive.exec.dynamic.partition.mode=nonstrict;
+
+drop table weblogsmonthly;
+
+CREATE TABLE weblogsmonthly( host STRING,   identity STRING,   user STRING,   time STRING,   request STRING,   status STRING,   size STRING,   referer STRING,   agent STRING, mnt STRING) row format delimited fields terminated by '\t';
+
+from weblogs insert overwrite table weblogsmonthly select *, regexp_extract(time, '([^/]*)/([^/]*)/([^/]*)(.*)', 2);
+
+select * from weblogsmonthly limit 10;
+
+drop table month_wise_partition;
+
+create table if not exists month_wise_partition( host STRING, identity STRING, user STRING, time STRING, request STRING, status STRING, size STRING, referer STRING, agent STRING) partitioned by (mnt string) row format delimited fields terminated by '\t' lines terminated by '\n' stored as textfile;
+
+insert overwrite table month_wise_partition partition (mnt) select * from weblogsmonthly;
+
+show partitions month_wise_partition;
+
+select * from month_wise_partition limit 10;
+
+drop table summary;
+
+CREATE TABLE summary( request STRING, numrequest int) STORED AS TEXTFILE;
+
+INSERT OVERWRITE TABLE summary SELECT request, COUNT(1) FROM weblogs WHERE host IS NOT NULL GROUP BY request;
+
+SELECT * FROM summary ORDER BY numrequest DESC LIMIT 100;
+
+SELECT request, COUNT(1) as cnt FROM month_wise_partition WHERE host IS NOT NULL and mnt = 'Jan' GROUP BY request ORDER By cnt DESC limit 10;
+
+
+
+drop table accesslogs;
+
+CREATE TABLE accesslogs(
+   host STRING,
+   identity STRING,
+   user STRING,
+   time STRING,
+   request STRING,
+   status STRING,
+   size STRING)
+   ROW FORMAT SERDE 'org.apache.hadoop.hive.contrib.serde2.RegexSerDe'
+   WITH SERDEPROPERTIES (
+ "input.regex" = "([^ ]*) ([^ ]*) ([^ ]*) (-|\\[[^\\]]*\\]) ([^ \"]*|\"[^\"]*\") (-|[0-9]*) (-|[0-9]*)",
+ "output.format.string" = "%1$s %2$s %3$s %4$s %5$s %6$s %7$s"
+)
+STORED AS TEXTFILE;
+
+load data local inpath '/home/hadoop/work/kalyan_hadoop_pocs/weblogs/access_log.txt' overwrite into table accesslogs;
+
+select * from accesslogs limit 100;
+
+
+drop table accesslogsdate;
+
+CREATE TABLE accesslogsdate( host STRING,   identity STRING,   user STRING,   time STRING,   request STRING,   status STRING,   size STRING, dt STRING) row format delimited fields terminated by '\t';
+
+from accesslogs insert overwrite table accesslogsdate select *, regexp_extract(time, '\\[([^\:]*):(.*)(])',1);
+
+select * from accesslogsdate limit 10;
+
+drop table date_wise_partition;
+
+create table if not exists date_wise_partition( host STRING, identity STRING, user STRING, time STRING, request STRING, status STRING, size STRING) partitioned by (dt STRING) row format delimited fields terminated by '\t' lines terminated by '\n' stored as textfile;
+
+insert overwrite table date_wise_partition partition (dt) select * from accesslogsdate;
+
+show partitions date_wise_partition;
+
+select * from date_wise_partition limit 10;
+$ select a, b, sum(c) from group_by_test group by a, b having sum(c) > 20;
+$ select concat(a, b) as r, sum(c) from group_by_test group by concat(a, b) having sum(c) > 20;
+
+select a, b, sum(c) from group_by_test group by a, b grouping sets((a,b), a);
+-- this is the same as doing:
+$ select a, b, sum(c) from group_by_test group by a, b;
+	union all
+	select a, null, sum(c) from group_by_test group by a;
+
+-- example 1.
+$ select a, b, sum(c) from group_by_test group by a, b grouping sets(a, b, ());
+-- this is the same as doing:
+$ select a, null, sum(c) from group_by_test group by a;
+	union all
+	select null, b, sum(c) from group_by_test group by b;
+	union all
+	select null, null, sum(c) from group_by_test;
+
+	
+select a, b, sum(c) from group_by_test group by a, b with cube; 
+-- this is the same as doing:
+	select a, b, sum(c) from group_by_test group by a, b grouping sets((a, b), a, b, ());\
+
+$ select a, b, sum(c) from group_by_test group by a, b with rollup; 
+-- this is the same as doing:
+-- we use grouping sets, first we do (a, b), we do a rollup so we get left only with 'a', we do another rollup
+-- and we get left only with '()'
+	select a, b, sum(c) from group_by_test group by a, b grouping sets((a, b), a, ());
+
+
+
+
+
+

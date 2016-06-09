@@ -1,0 +1,60 @@
+$ create table group_by_test (
+		a int,
+		b string,
+		c int
+	)
+	row format  
+	delimited fields terminated by ',';
+
+$ load data local inpath 'data/group_by.txt' 
+	overwrite into table group_by_test;
+
+$ select a, b, sum(c) from group_by_test group by a, b;   
+/*
+1	b	10
+1	h	30
+1	s	10
+2	a	10
+*/
+
+$ select a, sum(c) from group_by_test group by a;
+/*
+1	50
+2	10
+*/
+
+-- having syntax.
+$ select a, b, sum(c) from group_by_test group by a, b having sum(c) > 20;
+
+-- group by on function.
+$ select concat(a, b) as r, sum(c) from group_by_test group by concat(a, b) having sum(c) > 20;
+
+-- grouping sets.
+-- example 1.
+$ select a, b, sum(c) from group_by_test group by a, b grouping sets((a,b), a);
+-- this is the same as doing:
+$ select a, b, sum(c) from group_by_test group by a, b;
+	union all
+	select a, null, sum(c) from group_by_test group by a;
+
+-- example 1.
+$ select a, b, sum(c) from group_by_test group by a, b grouping sets(a, b, ());
+-- this is the same as doing:
+$ select a, null, sum(c) from group_by_test group by a;
+	union all
+	select null, b, sum(c) from group_by_test group by b;
+	union all
+	select null, null, sum(c) from group_by_test;
+
+
+-- cube.
+$ select a, b, sum(c) from group_by_test group by a, b with cube; 
+-- this is the same as doing:
+	select a, b, sum(c) from group_by_test group by a, b grouping sets((a, b), a, b, ());\
+
+-- rollup.
+$ select a, b, sum(c) from group_by_test group by a, b with rollup; 
+-- this is the same as doing:
+-- we use grouping sets, first we do (a, b), we do a rollup so we get left only with 'a', we do another rollup
+-- and we get left only with '()'
+	select a, b, sum(c) from group_by_test group by a, b grouping sets((a, b), a, ());

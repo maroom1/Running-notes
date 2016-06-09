@@ -1,0 +1,90 @@
+sudo
+hive
+show databases;
+create database testhivedb;
+--hadoop dfs -mkdir /DBFilestest
+--hadoop dfs -copyFromLocal /home/edureka/Desktop/LMS/hive/hivedbtestfiles/txns1.txt /DBFilestest/
+use testhivedb; 
+create table txnrecords(txn INT,txndate STRING,custno INT,amount DOUBLE,category STRING,product STRING,city STRING,state STRING,spendby STRING) row format delimited fields terminated by ',' stored as textfile;
+describe txnrecords;
+show tables;  
+load data inpath '/DBFilestest/txns1.txt' overwrite into table txnrecords;
+create table customer(custno string,firstname string,lastname string,age int,profession string) row format delimited fields terminated by ',';
+load data local inpath '/home/edureka/Desktop/LMS/hive/hivedbtestfiles/custs' into table customer;
+select * from customer;
+select * from txnrecords;
+select count(*) from txnrecords;
+---hadoop dfs -mkdir /DBFilestest/ExternalDB/
+---hadoop dfs -mkdir /DBFilestest/ExternalDB/DB1/
+---hadoop dfs -copyFromLocal /home/edureka/Desktop/LMS/hive/hivedbtestfiles/custs /DBFilestest/ExternalDB/DB1/
+create external table example_customer(custno string,firstname string,lastname string,age int,profession string) row format delimited fields terminated by ',' location '/DBFilestest/ExternalDB/DB1/';
+Insert---
+from customer cus insert overwrite table example_customer select cus.custno,cus.firstname,cus.lastname,cus.age,cus.profession;
+*->INSERT OVERWRITE is used to overwrite the existing data in the table or partition.
+*->INSERT INTO is used to append the data into existing data in a table. (Note: INSERT INTO syntax is work from the version 0.8)
+create table txnrecsByCat(txn INT,txndate STRING,custno INT,amount DOUBLE,product STRING,city STRING,state STRING,spendby STRING) partitioned by (category string) clustered by (state) into 10 buckets row format delimited fields terminated by ',' stored as textfile;
+from txnrecords txn insert overwrite table txnrecsByCat partition(category) select  txn.txn,txn.txndate,txn.custno,txn.amount,txn.product,txn.city,txn.state,txn.spendby,txn.category;
+set hive.exec.dynamic.partition=true;
+set hive.exec.dynamic.partition.mode=nonstrict;
+from txnrecords txn insert overwrite table txnrecsByCat partition(category) select   <--same commad as above we have to enable dynamic partition-> txn.txn,txn.txndate,txn.custno,txn.amount,txn.product,txn.city,txn.state,txn.spendby,txn.category;
+SET hive.exec.max.dynamic.partitions=100000;
+SET hive.exec.max.dynamic.partitions.pernode=100000;
+select count(*) from txnrecords;  
+select count(*) from txnrecsbycat;
+drop table customer;
+show tables;
+select count(distinct category) from txnrecsbycat;
+select category,sum(amount) from txnrecsbycat group by category;
+select category,sum(amount) from txnrecords group by category; 
+select count(distinct category) from txnrecords;                
+create table catbyamt as select category,sum(amount) from txnrecsbycat group by category;
+describe catbyamt;
+select custno, sum(amount) as tot from txnrecords [group by custno] [order by tot [desc]] limit 10;
+create table out1 (custno int,firstname string,age int,profession string,amount double,product string) row format delimited fields terminated by ',';
+insert overwrite table out1 select a.custno,a.firstname,a.age,a.profession,b.amount,b.product from customer a JOIN txnrecords b ON a.custno = b.custno;     
+select * from out1 limit 100;
+create table out2 (custno int,firstname string,age int,profession string,amount double,product string, level string) row format delimited fields terminated by ',';   
+insert overwrite table out2
+select * , case
+ when age<30 then 'low'
+ when age>=30 and age < 50 then 'middle'
+ when age>=50 then 'old' 
+ else 'others'
+end
+from out1;
+select * from out2 limit 100; 
+describe out2;  
+create table out3 as select level,sum(amount) from out2 group by level;
+****emp.txt
+****swetha,250000,Chennai
+****anamika,200000,Kanyakumari
+****tarun,300000,Pondi
+****anita,250000,Selam
+****email.txt
+****swetha,swetha@gmail.com
+****tarun,tarun@edureka.in
+****nagesh,nagesh@yahoo.com
+****venkatesh,venki@gmail.com
+create table employee(name string, salary float,city string) row format delimited fields terminated by ',';
+load data local inpath '/home/edureka/Desktop/LMS/HIVE_MINE/emp.txt' into table employee;
+select * from employee where name='tarun';
+create table mailid (name string, email string) row format delimited fields terminated by ',';
+load data local inpath '/home/edureka/Desktop/LMS/HIVE_MINE/email.txt' into table mailid;
+select a.name,a.city,a.salary,b.email from employee a join mailid b on a.name = b.name;
+select a.name,a.city,a.salary,b.email from employee a left outer join mailid b on a.name = b.name;
+select a.name,a.city,a.salary,b.email from employee a right outer join mailid b on a.name = b.name;
+select a.name,a.city,a.salary,b.email from employee a full outer join mailid b on a.name = b.name;
+ADD JAR /home/edureka/Desktop/LMS/hive/HIVE_Codes/myudfs.jar;
+CREATE DATABASE healthDB;
+USE healthDB;
+CREATE TABLE healthCareSampleDS (PatientID INT, Name STRING, DOB STRING, PhoneNumber STRING, EmailAddress STRING, SSN STRING, Gender STRING, Disease STRING, weight FLOAT) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',';
+LOAD DATA LOCAL INPATH '/home/edureka/Desktop/LMS/hive/HIVE_Codes/txns' INTO table healthCareSampleDS;
+CREATE TEMPORARY FUNCTION deIdentify AS 'myudfs.Deidentify';
+CREATE TABLE healthCareSampleDSDeidentified AS SELECT PatientID, deIdentify(Name), deIdentify(DOB), deIdentify(PhoneNumber), deIdentify(EmailAddress), deIdentify(SSN), deIdentify(Gender), deIdentify(Disease), deIdentify(weight) FROM healthCareSampleDS;describe formatted healthcaresampleds;            
+describe formatted healthCareSampleDSDeidentified;            
+
+
+
+
+
+

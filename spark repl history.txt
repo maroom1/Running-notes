@@ -145,4 +145,10 @@ mostly there will be jar problem you should overcome that by checking the compta
 
 
 spark-shell --jars "D:\git_work\spark\Test1\target\scala-2.10\Test1-1.0.jar"
+
+
+spark-submit --class "main.TwitterPopularTags" --master "local[*]" "D:\git_work\spark\scalaEx\twitter-streaming\target\scala-2.10\twitterstreaming_2.10-1.0.jar" 'cjxnDopjxEzAKR5CKhP9ABNlV' 'd2ueoyxB8ovKZiIvGHZPi1c8l9ewQKJ2GWIdBHWBe6qumOZugM' '57365302-NPjXIRvaOtmqA6mPLgA2X56Kcb4vXMli0bN0eKzcT' 'MQ2gj7cd09CUcXADK8FGaq8Euq1vzRobgdBxGaS2STURA' 'Indy500' 'Trump'
+
+
+
   

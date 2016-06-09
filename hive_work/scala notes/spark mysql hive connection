@@ -1,0 +1,138 @@
+connecting to mysql spark using RDD
+----------------------------------------------------------
+import org.apache.spark.rdd.JdbcRDD
+import java.sql.{Connection, DriverManager, ResultSet}
+val url="jdbc:mysql://localhost:3306/employees"
+val username = "root"
+val password = "1234567890"
+Class.forName("com.mysql.jdbc.Driver").newInstance
+val myRDD = new JdbcRDD( sc, () => 
+DriverManager.getConnection(url,username,password) ,
+"select * from employees limit ?, ?",
+1, 5, 2, r => r.getString("last_name") + ", " + r.getString("first_name"))
+myRDD.foreach(println)
+myRDD.saveAsTextFile("person") // it stores in hdfs 
+
+===============================================================
+
+connecting to mysql spark using DF  -> this is the best method
+----------------------------------------------------------
+
+val query: String =
+    "select * from employees"
+
+  val url= "jdbc:mysql://localhost:3306/employees"
+  val username = "root"
+  val password = "1234567890"
+  val sqlContext = new org.apache.spark.sql.SQLContext(sc)		
+ // val df = sqlContext.load("jdbc", Map(					// this load  method deprecated
+ //   "url" -> (url + "/?user=" + username + "&password=" + password),
+  //  "dbtable" -> s"($query) as tbl",
+   // "driver" -> "com.mysql.jdbc.Driver"))	
+
+val df = sqlContext.read.format("jdbc").option("url", "jdbc:mysql://localhost:3306/employees").option("driver", "com.mysql.jdbc.Driver").option("dbtable", "employees").option("user", "root").option("password", "1234567890").load()
+
+df.registerTempTable("tmp") //sqlc.dropTempTable("hvac")
+
+import org.apache.spark.sql.hive._
+
+scala> import org.apache.spark.sql.hive.HiveContext
+
+val hc = new HiveContext(sc)
+
+scala> sql("create table empdat as select * from tmp")
+
+//df.write.format("parquet").saveAsTable("emp_par")
+
+sqlc.sql("show tables").show
++---------+-----------+
+|tableName|isTemporary|
++---------+-----------+
++---------+-----------+
+
+hc.sql("show tables").show
++------------------+-----------+
+|         tableName|isTemporary|
++------------------+-----------+
+|               cdr|      false|
+|          cdrdummy|      false|
+|         cdrdummy1|      false|
+|       cdrdummyorc|      false|
+|cdrprimarylocation|      false|
+|          customer|      false|
+|               emp|      false|
+|            empdat|      false|
+|           empdat1|      false|
+|         employees|      false|
+|          parquest|      false|
+|             phmax|      false|
+|            phmax1|      false|
+|          phviscnt|      false|
+|         phviscnt1|      false|
+|        primaryloc|      false|
+|         sample_07|      false|
+|               src|      false|
+|              tmpd|      false|
+|            yahoo1|      false|
++------------------+-----------+
+only showing top 20 rows
+
+sql("show tables").show   --- to view all tables
++------------------+-----------+
+|         tableName|isTemporary|
++------------------+-----------+
+|               tmp|       true|
+|               cdr|      false|
+|          cdrdummy|      false|
+|         cdrdummy1|      false|
+|       cdrdummyorc|      false|
+|cdrprimarylocation|      false|
+|          customer|      false|
+|               emp|      false|
+|            empdat|      false|
+|           empdat1|      false|
+|         employees|      false|
+|          parquest|      false|
+|             phmax|      false|
+|            phmax1|      false|
+|          phviscnt|      false|
+|         phviscnt1|      false|
+|        primaryloc|      false|
+|         sample_07|      false|
+|               src|      false|
+|              tmpd|      false|
++------------------+--------- --+
+only showing top 20 rows  // maximum number od rows that show up in console
+
+
+val schema = StructType(Seq(...)) 
+val data = sc.parallelize(Seq(Row(...), …)) 
+val df = hsc.createDataFrame(data, schema) 
+df.write.format("parquet").saveAsTable(tableName)
+
+
+-----------+---------------+------+-----+---------+-------+
+| emp_no     | int(11)       | NO   | PRI | NULL    |       |
+| birth_date | date          | NO   |     | NULL    |       |
+| first_name | varchar(14)   | NO   |     | NULL    |       |
+| last_name  | varchar(16)   | NO   |     | NULL    |       |
+| gender     | enum('M','F') | NO   |     | NULL    |       |
+| hire_date  | date          | NO   |     | NULL    |       |
+
+df.write.format("jdbc").option("url", "jdbc:mysql://localhost:3306/employees").option("driver", "com.mysql.jdbc.Driver").option("dbtable", "emphive2").option("user", "root").option("password", "1234567890").insertInto("employees.emphive2") // not working
+
+
+df.write.jdbc(mysql_url,"employees.emphive3",new Perperties) // working - for this you have to import java.util.Properties -- metion has above 
+
+
+
+val mysql_url="jdbc:mysql://localhost:3306/employees?user=root&password=1234567890"
+
+scala> df.createJDBCTable(mysql_url,"employees.emphive",true) // it will create tabale with data here itself
+
+scala> df.insertIntoJDBC(mysql_url,"employees.emphive",true) //if want to append/overwrite the data 
+
+scala> df.insertIntoJDBC(mysql_url,"employees.emphive",false)
+
+
+df.write.format('ORC').mode("Append").insertInto("default.employees2")  /// we have to use exactly like this - mode is string -- we can use saveMode but no luck

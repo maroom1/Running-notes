@@ -1,0 +1,81 @@
+create table page_views (
+	user_id int,
+	dt string,
+	event_time string,
+	application_type string,
+	page string
+)
+row format  
+delimited fields terminated by ',';
+
+$ load data local inpath 'data/views.text' 
+overwrite into table page_views;
+
+
+$ create table views_stg (
+	user_id int,
+	event_time string
+)
+partitioned by (application_type string, dt string, page string)
+row format  
+delimited fields terminated by ',';
+
+-- manualy, not the best way to
+-- insert data to the views_stg table & create partitions out of that.
+$ from page_views src
+insert overwrite table views_stg partition(dt='2013-09-13',application_type='web', page='home')
+	select src.user_id, src.event_time where src.dt = '2013-09-13' and src.application_type ='web' and src.page = 'home' 
+insert overwrite table views_stg partition(dt='2013-09-14',application_type='web', page='home')
+	select src.user_id, src.event_time where src.dt = '2013-09-14' and src.application_type ='mobile' and src.page = 'about';
+-- this will create the folowing directories in hdfs:
+-- /user/hive/warehouse/apache-hive.db/views_stg/dt=2013-09-14/application_type=web/page=home/000000_0 
+-- /user/hive/warehouse/apache-hive.db/views_stg/dt=2013-09-14/application_type=web/page=home/000000_0
+
+-- a better approach, more dynamically.
+$ from page_views src
+-- 'application_type' is a static partition. 'dt' & 'page' are dynamic partitions.
+-- static partitions come before dynamic partitions.
+insert overwrite table views_stg partition(application_type = 'web',dt, page)
+select src.user_id, src.event_time, src.dt, src.page where application_type = 'web';
+--this will create:
+-- /user/hive/warehouse/apache-hive.db/views_stg/application_type=web/dt=2013-09-13/page=home/000000_0
+
+-----------------------------
+-- "real world use-case/flow"
+-----------------------------
+-- lets say we have huge amount of data in a location in hdfs.
+$ hadoop fs -mkdir -p /apache-hive/views
+$ hadoop fs -put data/views.txt /apache-hive/views
+
+-- create an external table which points to the location in hdfs.
+$ create external table staging (
+	user_id int,
+	dt string,
+	event_time string,
+	application_type string,
+	page string
+)
+row format  
+delimited fields terminated by ','
+location '/apache-hive/views';
+
+-- create the managed, partitioned table
+-- which will be the consuner of the 'staging' table.
+$ create table views_stg (
+	user_id int,
+	event_time string
+)
+partitioned by (y string, m string, d string)
+row format  
+delimited fields terminated by ',';
+
+insert into table views_stg partition(y, m, d)
+select user_id, event_time, substr(dt, 0, 4), substr(dt, 6, 2	), substr(dt, 9, 2)
+from staging;
+
+-- if all partitions are dynamic, we might need to set the 'strict mode':
+$ set hive.exec.dynamic.partition.mode=nonstrict;
+
+-- this will create in hive warehouse/hdfs
+-- /user/hive/warehouse/apache-hive.db/views_stg/y=2013/m=09/d=13/000000_0
+-- /user/hive/warehouse/apache-hive.db/views_stg/y=2013/m=09/d=14/000000_0

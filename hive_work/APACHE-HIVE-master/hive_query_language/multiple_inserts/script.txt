@@ -1,0 +1,44 @@
+$ create table movies (
+	name string,
+	date_of_release string,
+	action int,
+	mystery int
+) 
+row format  
+delimited fields terminated by ',';
+
+$ load data local inpath 'data/movies.txt' 
+overwrite into table movies;
+
+
+
+$ create table action_movies (
+	name string,
+	date_of_release string
+) 
+row format  
+delimited fields terminated by ',';
+
+
+
+$ create table mystery_movies (
+	name string,
+	date_of_release string
+) 
+row format  
+delimited fields terminated by ',';
+
+-- multiple inserts.
+-- extract action & horror movies into dedicated tables for further processing.
+
+-- less performance way.
+-- we query our data twice, for each insert statement.
+$ from movies
+insert overwrite table action_movies select name, date_of_release where action = 1 -- overwrite
+insert into table mystery_movies select name, date_of_release where mystery = 1; -- append
+
+-- a better way
+-- we query out data once and it becomes our source, then we query against our source. 
+from (select * from movies) src
+insert overwrite table action_movies select name, date_of_release where action = 1 -- overwrite
+insert into table mystery_movies select name, date_of_release where mystery = 1; -- append

@@ -1,0 +1,61 @@
+object Helpers {
+  implicit class IntWithTimes(x: Int) {
+    def times[A](f: => A): Unit = {
+      def loop(current: Int): Unit =
+        if(current > 0) {
+          f
+          loop(current - 1)
+        }
+      loop(x)
+    }
+  }
+}
+
+
+import Helpers._
+
+5 times println("HI")   //this is the main usage
+ 
+IntWithTimes(5).times(println("HI")) // normal usage
+  
+5.times(println("HI")) // we can call like this too .. which is impilicit paramaeter
+
+scala>  implicit class IntWithTimes(x: Int) {
+     |    def times[A](f: => A): Unit = {
+     |      def loop(current: Int): Unit =
+     |        if(current > 0) {
+     |          f
+     |          loop(current - 1)
+     |        }
+     |      loop(x)
+     |    }
+     |  }
+defined class IntWithTimes
+
+scala> 5.times(println("HI"))
+HI
+HI
+HI
+HI
+HI
+
+scala>
+
+example of higher order function
+
+object Test extends App{
+ 
+//def main(args: Array[String]) {
+ 
+println( apply( layout, 10) )
+ 
+//}
+ 
+def apply(f: Int => String, v: Int) = f(v)
+ 
+def layout[A](x: A) = "[" + x.toString() + "]"
+}
+
+you can run this programs in repl like this 
+
+Test.main(Array(""))  - assume you are calling the object like any other object and method

@@ -1,0 +1,10 @@
+-- order by -> give us global sorting.
+-- who does it? shuffle and sort or single reducer.
+-- select x, y, z from t1 order by x asc;
+-- this will use a single reducer in order to 
+-- achive global sorting.
+
+-- sort by
+-- select x, y, z from t1 sort by x asc;
+-- each reducer gets a sorted portion, but the sorting
+-- is not global.

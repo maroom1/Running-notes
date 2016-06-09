@@ -1,0 +1,149 @@
+1,abc,40000,a$b$c,hyd
+2,def,3000,d$f,bang
+
+create table tab7(id int,name string,sal bigint,sub array<string>,city string)row format delimited  fields terminated by ','collection items terminated by '$';
+
+load data local inpath '/home/edureka/Desktop/Input/arrayex' overwrite into table tab7;
+
+select sub[2] from tab7 where id=1;
+
+select sub[0] from tab7;
+
+select * from tab7
+
+
+----
+
+1,abc,40000,a$b$c,pf#500$epf#200,hyd
+2,def,3000,d$f,pf#500,bang
+
+create table tab10(id int,name string,sal bigint,sub array<string>,dud map<string,int>,city string)row format delimited fields terminated by ',' collection items terminated by '$' map keys terminated by '#';
+
+
+load data local inpath '/home/edureka/Desktop/Input/mapex' overwrite into table tab10;
+
+select dud["pf"] from tab10;
+
+select dud["pf"],dud["epf"] from tab10; 
+
+select * from tab10;
+
+----
+
+1,abc,40000,a$b$c,pf#500$epf#200,hyd$ap$500001
+2,def,3000,d$f,pf#500,bang$kar$600038
+
+create table tab11(id int,name string,sal bigint,sub array<string>,dud map<string,int>,addr struct<city:string,state:string,pin:bigint>)row format delimited fields terminated by ',' collection items terminated by '$' map keys terminated by '#';
+
+
+load data local inpath '/home/edureka/Desktop/Input/structex' overwrite into table tab11;
+
+select addr.city from tab11;
+
+select * from tab11;
+
+-------
+
+desc tab11;
+desc formatted tab11;
+desc extended tab11;
+
+-----
+
+CREATE TABLE empmahidata(
+cid bigint,
+cname struct<fname:string,lname:string>,
+cadd  struct<city:string,state:string>,
+cages array<smallint>,
+cfeel map<string,boolean>
+)
+row format delimited
+FIELDS terminated BY '|'
+collection items terminated BY ','
+map KEYS terminated BY ':'
+LINES terminated BY '\n' stored AS textfile;
+
+
+load data local inpath '/home/edureka/Desktop/Input/allex' overwrite into table empmahidata;
+
+select * from empmahidata;
+
+SELECT cadd.city FROM empmahidata;
+
+------------------
+
+hive -e "show databases;"
+
+hive -e "use extramsamp;select * from tab11;"
+
+hive -S -e "use extramsamp;select * from tab11;"
+
+my_val=$(hive -S -e "use extramsamp;select * from tab11;")
+
+echo $my_val
+
+hive -f my_script.hql
+
+example.hql: 
+show databases;
+show tables;
+set dfs.block.size=1073741824;
+select * from my_database.my_table limit 10;
+
+hive -hiveconf MY_VAR1=value1 -hiveconf MY_VAR2=value2 -f my_script.hql
+
+show databases;
+show tables;
+set dfs.block.size=${hiveconf:MY_VAR1};
+select * from ${hiveconf:MY_VAR2} limit 10;
+
+hive -S -hiveconf MY_VAR1=value1 -hiveconf MY_VAR2=value2 -f my_script.hql
+
+$ hive -S -e select a, b from t1 where c = 15 > results.txt;
+
+variable substitution.
+/*
+	4 namespaces:
+	hivevar:
+		-d, --define, --hivevar
+		set hivavar:name=value
+	hiveconf
+		--hiveconf
+		set hiveconf:property=value
+	system
+		set system:property=value
+	env
+		set env:property=value 
+*/
+
+set hivevar:cond = 123
+
+ hive -v -d src=movies -d db=the_database -e 'select * from ${hivevar:src}.${hivevar:db} limit 100'
+
+set
+
+set src
+
+
+SOME TIMES HAVE A DYNAMIC PARTITIONS CAUSES SO MUCH BURDEN , IT IS BETTER USE STATIC PARTITION IN TIMES NEEDED
+
+dynamic parition:
+INSERT INTO TABLE target_table PARTITION (p1)
+SELECT col1, col2, p1 FROM source_table
+WHERE p1 >= '2015-05-01' AND p1 < '2015-05-02'; 
+
+static paritions:
+
+INSERT INTO TABLE target_table PARTITION (p1 = '2015-05-01')
+SELECT col1, col2, p1 FROM source_table
+WHERE p1 >= '2015-05-01' AND p1 <'2015-05-02';
+
+removing the sorting on the paritions will help us optimise the query and reduce burden over reducers 
+for this we have to set = 
+SET hive.optimize.sort.dynamic.partition=false;
+
+
+
+
+
+

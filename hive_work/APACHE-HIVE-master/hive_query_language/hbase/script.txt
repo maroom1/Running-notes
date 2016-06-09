@@ -1,0 +1,32 @@
+-- put data into hdfs.
+$ hadoop fs -mkdir -p /apache-hive/employee
+$ hadoop fs -put data/employee.txt /apache-hive/employee
+
+-- create external table which points a location in hdfs.
+$ create external table employee_staging (
+	eid int,
+	ename string, 
+	esal string, 
+	address string
+)
+row format  
+delimited fields terminated by ','
+location '/apache-hive/employee';
+
+-- start hbase.
+$ start-hbase.sh 
+
+-- create hbase table 'Employee' with column family 'emp'.
+$ create 'Employee'.'emp'
+
+-- create an external hive table which points to the hbase table.
+create external table employee_hive(eid int, ename string, esal string, address string)
+stored by 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
+with serdeproperties ("hbase.columns.mapping" = ":key,emp:ename,emp:esal,emp:address")
+tblproperties("hbase.table.name" = "Employee");
+
+-- load data from 'employee_staging' table to the 'employee_hive' table.
+$ insert overwrite table employee_hive select eid, ename, esal, address from employee_staging;
+
+-- now we can check the hbase 'Employee' table:
+hbase> scan 'Employee'

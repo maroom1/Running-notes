@@ -984,7 +984,16 @@ res3: Array[Int] = Array(2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30,
 , 302, 304, 306, 308, 310, 312, 314, 316, 318, 320, 322, 324, 326, 328, 330, ...
 
 
+
+
+
+
 pyspark:
+
+
+
+
+
 
 C:\Users\YalamandaRao>pyspark
 Python 2.7.10 (default, May 23 2015, 09:44:00) [MSC v.1500 64 bit (AMD64)] on wi

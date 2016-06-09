@@ -1,0 +1,40 @@
+-- execute hive query.
+$ hive -e select a, b from t1 where c = 15;
+
+-- silent mode, hive wont produce additional data which is not the actual results.
+$ hive -S -e select a, b from t1 where c = 15 > results.txt;
+
+-- execute hive script.
+$ hive -f /path/to_script/script.hql;
+
+-- variable substitution.
+/*
+	4 namespaces:
+	hivevar:
+		-d, --define, --hivevar
+		set hivavar:name=value
+	hiveconf
+		--hiveconf
+		set hiveconf:property=value
+	system
+		set system:property=value
+	env
+		set env:property=value 
+*/
+
+-- how can we use it?
+$ hive -d src_table = movies;
+hive > set hivevar:cond = 123
+
+-- now we can use in our script/query
+$ select a, b, c from ${hivevar:src_table} where a = ${hivevar:cond}
+
+$ hive -v -d src=movies -d db=the_database -e 'select * from ${hivevar:src}.${hivevar:db} limit 100'
+
+-- display variables.
+-- show all variables including manu system variables.
+hive> set 
+
+-- show specific variable.
+hive> set hivevar:name=Yoav;
+hive> set name --> will output Yoav

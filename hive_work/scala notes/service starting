@@ -1,0 +1,8 @@
+nohup hive --service metastore &
+
+ root to user
+
+su 
+su edureka
+
+

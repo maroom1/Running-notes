@@ -1,0 +1,105 @@
+-- hadoop
+-- create 2 directories in hdfs.
+$ hadoop fs -mkdir -p /apache-hive/logs/pv_ext/somedatafor_7_11 /apache-hive/logs/pv_ext/2013/08/11/log/data
+
+-- hive
+-- example of creating external table.
+$ create database if not exists apache-hive;
+$ create external table page_views_ext (
+	ip string,
+	ts timestamp,
+	page string,
+	code1 int,
+	code2 int,
+	user_agent string
+)
+row format  
+delimited fields terminated by '\t' 
+location '/apache-hive/logs/pv_ext';
+
+-- show table info and properties.
+$ describe formatted page_views_ext;
+-- show additional info and the predicate that is going to be
+-- execute for filtering.
+$ explain select * from page_views_ext where code1 = 200;
+$ drop table page_views_ext;
+
+-- create partitioned table.
+$ create external table page_views_ext (
+	ip string,
+	ts timestamp,
+	page string,
+	code1 int,
+	code2 int,
+	user_agent string
+)
+partitioned by(y string, m string, d string) 
+row format 
+delimited fields terminated by '\t' 
+location '/apache-hive/logs/pv_ext'; -- this has no meaning at this point but we'll use it later, we'll use it in the Recover Partitions section.
+
+$ alter table page_views_ext add partition (y='2013', m='7', d='11')
+location '/apache-hive/logs/pv_ext/somedatafor_7_11';
+-- not sure why we need 2 steps for creating the partitioned table.
+
+-- y,m & d are virtual columns which means, we can do:
+-- $ select * from page_views_ext where y = '2013' (or m = '7' or d = '11) and we'll get the data in the
+-- '/apache-hive/logs/pv_ext/somedatafor_7_11' location. 
+
+-- hadoop
+-- put data in one of the locations in hdfs we've created before.
+$ hadoop fs -put ../../data/apache.logs /apache-hive/logs/pv_ext/somedatafor_7_11
+
+-- lets test:
+-- get all data of september 11;
+$ select * from page_views_ext where m = '7' and d = '11';
+
+-- lets put more data in the august month directory/partitioned we've created before.
+$ hadoop fs -put ../../data/apache.logs /apache-hive/logs/pv_ext/2013/08/11/log/data
+-- add another partition to the table.
+$ alter table page_views_ext add partition (y='2013', m='8', d='11')
+location '/apache-hive/logs/pv_ext/2013/08/11/log/data';
+
+-- now we have a table with 2 partitions where each partition points to another location in hdfs.
+-- lets test:
+$ select count(*) as record_count, m from page_views_ext where d = '11' group by m;
+-- this will output:
+-- OK
+-- 521	7
+-- 521	8
+
+-- because we've filterd only by day, both partitions are valid, so we get data from both locations.
+-- another thing, we can ref 'm' in out query as a normal column with some value.
+
+-- Recover Partitions -> sync hdfs data with hive table.
+-- when we add data to hdfs, hive doesnt know about it.
+-- here we are going to use the 'location' definition of the create table statement.
+-- add data
+$ hadoop fs -mkdir -p /apache-hive/logs/pv_ext/y=2013/m=7/d=20
+$ hadoop fs -put ../../data/apache.logs /apache-hive/logs/pv_ext/y=2013/m=7/d=20
+-- hive
+-- this is the command which will make hive to sync with the new partition/directories structure. 
+-- hive has the base location in the file system, we specified it in the table create statement.
+-- hive scans this location for new partitions.
+$ msck repair table page_views_ext;
+-- now we can do
+$ select * from page_views_ext where d = '20';
+
+-- create managed partition table.
+$ create table page_views (
+	ip string,
+	ts timestamp,
+	page string,
+	code1 int,
+	code2 int,
+	user_agent string
+)
+partitioned by(y string, m string, d string) 
+row format  
+delimited fields terminated by '\t';
+
+$ load data local inpath '../../data/apache.logs' 
+overwrite into table page_views partition (y='2013', m='8', d='05');
+
+-- now if we check out hdfs hive warehouse, we'll see that we have this structure which represents the managed partition table:
+-- 	/user/hive/warehouse/apache-hive.db/page_views/y=2013/m=8/d=05/apache.logs

@@ -1,0 +1,14 @@
+
+moving tables between the two clusters of hive instances
+
+1. Export the table to the HDFS 
+
+EXPORT TABLE <TABLE NAME> TO "PATH/TO/HDFS"  // "FIRST / IS NOT MMANDATORY"
+
+2. use distcp to copy the data to anothr clusters
+
+HADOOP DISTCP HDFS://LOCALHOST:8020/PATH/TO/HDFS HDFS://---/PATH/TO/HDFS
+
+3.import the tables from the copied path
+
+IMPORT TABLE <TABLE NAME> FROM "PATH/TO/HDFS"

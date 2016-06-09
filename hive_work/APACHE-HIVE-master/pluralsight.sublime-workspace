@@ -1,0 +1,424 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"app",
+				"application_type"
+			],
+			[
+				"action",
+				"action_movies"
+			],
+			[
+				"page",
+				"page_views_ext"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/home/edureka/Desktop/stackoverflow/sales_data/samples/Product.short.csv",
+			"settings":
+			{
+				"buffer_size": 300,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/home/edureka/Desktop/stackoverflow/sales_data/samples/SalesOrderDetail.short.csv",
+			"settings":
+			{
+				"buffer_size": 471,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "hive_query_language/sorting/script.txt",
+			"settings":
+			{
+				"buffer_size": 331,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "hive_query_language/dynamic_partition_inserts/script.txt",
+			"settings":
+			{
+				"buffer_size": 2952,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 77.0,
+		"last_filter": "sql",
+		"selected_items":
+		[
+			[
+				"sql",
+				"Set Syntax: SQL"
+			],
+			[
+				"s",
+				"Set Syntax: SQL"
+			],
+			[
+				"hive",
+				"Set Syntax: HIVE Log Files"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 400.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/edureka/Desktop/hive/pluralsight",
+		"/home/edureka/Desktop/hive/pluralsight/data",
+		"/home/edureka/Desktop/hive/pluralsight/hive_query_language",
+		"/home/edureka/Desktop/hive/pluralsight/hive_query_language/cli",
+		"/home/edureka/Desktop/hive/pluralsight/hive_query_language/dynamic_partition_inserts",
+		"/home/edureka/Desktop/hive/pluralsight/hive_query_language/group_by",
+		"/home/edureka/Desktop/hive/pluralsight/hive_query_language/hbase",
+		"/home/edureka/Desktop/hive/pluralsight/hive_query_language/multiple_inserts",
+		"/home/edureka/Desktop/hive/pluralsight/hive_query_language/sorting"
+	],
+	"file_history":
+	[
+		"/home/edureka/Desktop/hive/pluralsight/hive_query_language/multiple_inserts/script.txt",
+		"/home/edureka/Desktop/hive/pluralsight/hive_query_language/group_by/script.txt",
+		"/home/edureka/Desktop/hive/pluralsight/data/group_by.txt",
+		"/home/edureka/Desktop/hive/pluralsight/hive_query_language/sorting/script.txt",
+		"/home/edureka/Desktop/hive/pluralsight/hive_query_language/cli/script.txt",
+		"/home/edureka/Desktop/hive/pluralsight/hive_query_language/bucketing/script.txt",
+		"/home/edureka/Desktop/hive/pluralsight/hive_query_language/hbase/script.txt",
+		"/home/edureka/Desktop/stackoverflow/Comments.xml",
+		"/home/edureka/Desktop/stackoverflow/PostLinks.xml",
+		"/home/edureka/Desktop/stackoverflow/sales_data/SalesOrderDetail.csv",
+		"/home/edureka/Desktop/stackoverflow/sales_data/SalesOrderDetail.short.csv",
+		"/home/edureka/Desktop/stackoverflow/sales_data/samples/Product.short.csv",
+		"/home/edureka/Desktop/hive/pluralsight/data/employee.txt",
+		"/home/edureka/Desktop/hive/pluralsight/data/weblog.txt",
+		"/home/edureka/Desktop/hive/pluralsight/hive_query_language/dynamic_partition_inserts/script.txt",
+		"/home/edureka/Desktop/hive/pluralsight/data/movies.txt",
+		"/home/edureka/Desktop/hive/pluralsight/data/views.txt",
+		"/home/edureka/Desktop/hive/pluralsight/hive_query_language/partitions/script.txt",
+		"/home/edureka/Desktop/hive/pluralsight/derby.log",
+		"/home/edureka/Desktop/hive/pluralsight/script.txt",
+		"/home/edureka/Desktop/hive/youtube/serde_regex/serde_regex.hql",
+		"/home/edureka/Desktop/hive/instant-apache-hive/code/ColumnarMapSerDe.java",
+		"/home/edureka/Desktop/hive/youtube/serde_regex/apache_clf (copy).txt",
+		"/home/edureka/Desktop/hive/instant-apache-hive/code/01_tables_and_queries.hql",
+		"/home/edureka/Desktop/hive/instant-apache-hive/code/debugging/debugging.txt",
+		"/home/edureka/Desktop/hive/instant-apache-hive/code/debugging/debugging.hql",
+		"/home/edureka/Desktop/hive/youtube/serde_regex/apache_logs_short.txt",
+		"/home/edureka/Desktop/hive/youtube/serde_regex/apache_clf.txt",
+		"/home/edureka/Desktop/hive/youtube/serde_regex/serde_regex.pig",
+		"/home/edureka/Desktop/hive/instant-apache-hive/code/05_setting_the_file_format.hql",
+		"/home/edureka/Desktop/hadoop_real-world_solutions_cookbook/chapters/chap3/data/apache_clf.txt",
+		"/home/edureka/Desktop/hive/instant-apache-hive/code/data/olympic_city_bid _with_prefix.tsv",
+		"/home/edureka/Desktop/hive/instant-apache-hive/9475OS_Code/data/olympic_city_bid.tsv",
+		"/home/edureka/Desktop/hive/instant-apache-hive/9475OS_Code/olympic_city_bid.txt",
+		"/home/edureka/Desktop/hive/instant-apache-hive/9475OS_Code/01_tables_and_queries.hql",
+		"/home/edureka/Desktop/hive/instant-apache-hive/code/json_data.txt",
+		"/home/edureka/Desktop/hive/instant-apache-hive/code/data.json",
+		"/home/edureka/Desktop/hive/instant-apache-hive/code/data/olympic_athlete.tsv",
+		"/home/edureka/Desktop/hive/instant-apache-hive/code/03_using_hive_noninteractively.sh",
+		"/home/edureka/Desktop/hive/instant-apache-hive/code/02_complex_data_types.hql",
+		"/home/edureka/Desktop/hive/hadoop_real_world_solutions_cookbook/Using_Hive_and_Python_to_clean_and_transform_geographical_event_data/load_acled.hql",
+		"/home/edureka/Desktop/hive/hadoop_real_world_solutions_cookbook/Using_Hive_and_Python_to_clean_and_transform_geographical_event_data/clean_and_transform_acled.hql",
+		"/home/edureka/Desktop/hive/hadoop_real_world_solutions_cookbook/Using_Hive_and_Python_to_clean_and_transform_geographical_event_data/clean_acled_nigeria.py",
+		"/home/edureka/Desktop/elephant-bird/test-json.pig",
+		"/home/edureka/Desktop/hadoop_real-world_solutions_cookbook/chapters/chap3/my_exercises/sort_by_timestamp/sort_by_timestamp.pig",
+		"/home/edureka/Desktop/pig/filter_bot_traffic/filter_bot_traffic.pig",
+		"/home/edureka/Desktop/pig/sessionize/sessionize.pig",
+		"/home/edureka/Desktop/hadoop_real-world_solutions_cookbook/chapters/chap3/ETLChapter3/ETLChapter3/src/main/java/com/packt/ch3/etl/geo/Nigeria_ACLED_cleaned.tsv",
+		"/home/edureka/Desktop/hadoop_real-world_solutions_cookbook/chapters/chap3/GeoHiveSourceCode/main/hql/load_acled.sql",
+		"/home/edureka/Desktop/hadoop_real-world_solutions_cookbook/chapters/chap3/GeoHiveSourceCode/main/hql/clean_and_transform_acled.hql",
+		"/home/edureka/Desktop/hive/HiveEssentials-master/scripts/Chapter_03/employee.txt",
+		"/home/edureka/Desktop/hive/HiveEssentials-master/scripts/Chapter_03/employee_id.txt",
+		"/home/edureka/Desktop/hive/HiveEssentials-master/scripts/Chapter_03/hive_database_ddl.hql",
+		"/home/edureka/Desktop/hive/HiveEssentials-master/scripts/Chapter_03/hive_data_type.hql",
+		"/home/edureka/Desktop/hive/hadoop_real_world_solutions_cookbook/Nigeria_ACLED.csv",
+		"/home/edureka/Desktop/hive/hadoop_real_world_solutions_cookbook/Nigeria_ACLED_cleaned.tsv",
+		"/home/edureka/Desktop/elephant-bird/data.json",
+		"/home/edureka/Desktop/hadoop_real-world_solutions_cookbook/chapters/chap3/my_exercises/filter_boot_traffic/filter_bot_traffic.pig",
+		"/home/edureka/Desktop/hadoop_real-world_solutions_cookbook/chapters/chap3/filter_bot_traffic.pig",
+		"/home/edureka/Desktop/hadoop_real-world_solutions_cookbook/chapters/chap3/filter_boot_traffic/filter_bot_traffic.pig"
+	],
+	"find":
+	{
+		"height": 23.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"STRING",
+			">",
+			"STRING",
+			"index.html",
+			"data",
+			"/"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 3,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/home/edureka/Desktop/stackoverflow/sales_data/samples/Product.short.csv",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 300,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								300,
+								300
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/home/edureka/Desktop/stackoverflow/sales_data/samples/SalesOrderDetail.short.csv",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 471,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "hive_query_language/sorting/script.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 331,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								145,
+								145
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "hive_query_language/dynamic_partition_inserts/script.txt",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 2952,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 360.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 88.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "pluralsight.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 302.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

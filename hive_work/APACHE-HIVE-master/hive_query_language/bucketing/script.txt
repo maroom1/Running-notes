@@ -1,0 +1,33 @@
+-- put data into hdfs.
+$ hadoop fs -mkdir -p /apache-hive/buckets
+$ hadoop fs -put data/weblog.txt /apache-hive/buckets
+
+-- create external table which points a location in hdfs.
+$ create external table raw_logs (
+	user_id int,
+	dt string, 
+	url string, 
+	source_ip string
+)
+row format  
+delimited fields terminated by ','
+location '/apache-hive/buckets';
+
+
+-- create managed partitioned table.
+$ create table weblog (
+	user_id int, 
+	url string, 
+	source_ip string
+)
+partitioned by (dt string)
+clustered by (user_id) into 2 buckets;
+
+
+-- load data to the table using the external table.
+-- number of reducers = number of output files = number of buckets.
+$ set hive.enforce.bucketing = true;
+$ from raw_logs
+	insert overwrite table weblog
+	partition (dt)
+	select user_id, url, source_ip, dt;
