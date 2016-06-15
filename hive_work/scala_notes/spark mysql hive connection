@@ -126,7 +126,7 @@ df.write.jdbc(mysql_url,"employees.emphive3",new Perperties) // working - for th
 
 
 
-val mysql_url="jdbc:mysql://localhost:3306/employees?user=root&password=1234567890"
+val mysql_url="jdbc:mysql://localhost:3306/employees.hello?user=root&password=1234567890"
 
 scala> df.createJDBCTable(mysql_url,"employees.emphive",true) // it will create tabale with data here itself
 

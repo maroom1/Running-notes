@@ -1,0 +1,33 @@
+I usually get something like the following when trying to use a multi-line file.
+
+    scala> val productsML = sqlContext.read.json("/tmp/hcc/products.json")
+    productsML: org.apache.spark.sql.DataFrame = [_corrupt_record: string]
+
+That said, all seems to be working for me with a file like the following.
+
+    [root@sandbox ~]# hdfs dfs -cat /tmp/hcc/employees.json
+    {"id" : "1201", "name" : "satish", "age" : "25"}
+    {"id" : "1202", "name" : "krishna", "age" : "28"}
+    {"id" : "1203", "name" : "amith", "age" : "39"}
+    {"id" : "1204", "name" : "javed", "age" : "23"}
+    {"id" : "1205", "name" : "prudvi", "age" : "23"}
+
+As you can see by the two ways I read the JSON file below.
+
+    SQL context available as sqlContext.
+    scala> val df1 = sqlContext.read.json("/tmp/hcc/employees.json")
+    df1: org.apache.spark.sql.DataFrame = [age: string, id: string, name: string]
+    scala> df1.printSchema()
+    root
+     |-- age: string (nullable = true)
+     |-- id: string (nullable = true)
+     |-- name: string (nullable = true)
+    scala> df1.show()
+    +---+----+-------+
+    |age|  id|   name|
+    +---+----+-------+
+    | 25|1201| satish|
+    | 28|1202|krishna|
+    | 39|1203|  amith|
+    | 23|1204|  javed|
+    | 23|1205| prudvi|

@@ -1,0 +1,174 @@
+val df = Seq(
+  ("Alice", 1,"2016-05-01"),
+  ("Alice",1 ,"2016-05-03"),
+  ("Alice", 2,"2016-05-04"),
+  ("Bob", 3,"2016-05-01")
+).toDF("name","value" ,"date")
+import org.apache.spark.sql.expressions.Window
+if leading row's df("value") is same (partition by name) I want to say "Nochange" otherwise subtract 1 day from date column 
+
+df.withColumn("result" , lead(col("value"), 1).over(windowSpec)).show
+
+df.withColumn("result" , lead(col("value"), 1).over(windowSpec))
+  .withColumn("result",
+    when(col("result") === col("value") || col("result").isNull, "NOCHANGE")
+    .otherwise(date_sub(col("date"), 1))
+  ).show
+
+------------------------------------------------
+
+
+
+Question: What are the best-selling and the second best-selling products in every category?
+
+val dataset = Seq(
+  ("Thin",       "cell phone", 6000),
+  ("Normal",     "tablet",     1500),
+  ("Mini",       "tablet",     5500),
+  ("Ultra thin", "cell phone", 5000),
+  ("Very thin",  "cell phone", 6000),
+  ("Big",        "tablet",     2500),
+  ("Bendable",   "cell phone", 3000),
+  ("Foldable",   "cell phone", 3000),
+  ("Pro",        "tablet",     4500),
+  ("Pro2",       "tablet",     6500))
+  .toDF("product", "category", "revenue")
+
+scala> dataset.show
++----------+----------+-------+
+|   product|  category|revenue|
++----------+----------+-------+
+|      Thin|cell phone|   6000|
+|    Normal|    tablet|   1500|
+|      Mini|    tablet|   5500|
+|Ultra thin|cell phone|   5000|
+| Very thin|cell phone|   6000|
+|       Big|    tablet|   2500|
+|  Bendable|cell phone|   3000|
+|  Foldable|cell phone|   3000|
+|       Pro|    tablet|   4500|
+|      Pro2|    tablet|   6500|
++----------+----------+-------+
+
+scala> data.where('category === "tablet").show
++-------+--------+-------+
+|product|category|revenue|
++-------+--------+-------+
+| Normal|  tablet|   1500|
+|   Mini|  tablet|   5500|
+|    Big|  tablet|   2500|
+|    Pro|  tablet|   4500|
+|   Pro2|  tablet|   6500|
++-------+--------+-------+
+
+The question boils down to ranking products in a category based on their revenue, and to pick the best selling and the second best-selling products based the ranking.
+
+import org.apache.spark.sql.expressions.Window
+val overCategory = Window.partitionBy('category).orderBy('revenue.desc)
+val rank = dense_rank.over(overCategory)
+
+val ranked = data.withColumn("rank", dense_rank.over(overCategory))
+
+scala> ranked.show
++----------+----------+-------+----+
+|   product|  category|revenue|rank|
++----------+----------+-------+----+
+|      Pro2|    tablet|   6500|   1|
+|      Mini|    tablet|   5500|   2|
+|       Pro|    tablet|   4500|   3|
+|       Big|    tablet|   2500|   4|
+|    Normal|    tablet|   1500|   5|
+|      Thin|cell phone|   6000|   1|
+| Very thin|cell phone|   6000|   1|
+|Ultra thin|cell phone|   5000|   2|
+|  Bendable|cell phone|   3000|   3|
+|  Foldable|cell phone|   3000|   3|
++----------+----------+-------+----+
+
+scala> ranked.where('rank <= 2).show
++----------+----------+-------+----+
+|   product|  category|revenue|rank|
++----------+----------+-------+----+
+|      Pro2|    tablet|   6500|   1|
+|      Mini|    tablet|   5500|   2|
+|      Thin|cell phone|   6000|   1|
+| Very thin|cell phone|   6000|   1|
+|Ultra thin|cell phone|   5000|   2|
++----------+----------+-------+----+
+
+Revenue Difference per Category
+Note
+	This example is the 2nd example from an excellent article Introducing Window Functions in Spark SQL.
+
+import org.apache.spark.sql.expressions.Window
+val reveDesc = Window.partitionBy('category).orderBy('revenue.desc)
+val reveDiff = max('revenue).over(reveDesc) - 'revenue
+
+scala> data.select('*, reveDiff as 'revenue_diff).show
++----------+----------+-------+------------+
+|   product|  category|revenue|revenue_diff|
++----------+----------+-------+------------+
+|      Pro2|    tablet|   6500|           0|
+|      Mini|    tablet|   5500|        1000|
+|       Pro|    tablet|   4500|        2000|
+|       Big|    tablet|   2500|        4000|
+|    Normal|    tablet|   1500|        5000|
+|      Thin|cell phone|   6000|           0|
+| Very thin|cell phone|   6000|           0|
+|Ultra thin|cell phone|   5000|        1000|
+|  Bendable|cell phone|   3000|        3000|
+|  Foldable|cell phone|   3000|        3000|
++----------+----------+-------+------------+
+
+Difference on Column
+
+Compute a difference between values in rows in a column.
+
+val pairs = for {
+  x <- 1 to 5
+  y <- 1 to 2
+} yield (x, 10 * x * y)
+val ds = pairs.toDF("ns", "tens")
+
+scala> ds.show
++---+----+
+| ns|tens|
++---+----+
+|  1|  10|
+|  1|  20|
+|  2|  20|
+|  2|  40|
+|  3|  30|
+|  3|  60|
+|  4|  40|
+|  4|  80|
+|  5|  50|
+|  5| 100|
++---+----+
+
+import org.apache.spark.sql.expressions.Window
+val overNs = Window.partitionBy('ns).orderBy('tens)
+val diff = lead('tens, 1).over(overNs)
+
+scala> ds.withColumn("diff", diff - 'tens).show
++---+----+----+
+| ns|tens|diff|
++---+----+----+
+|  1|  10|  10|
+|  1|  20|null|
+|  3|  30|  30|
+|  3|  60|null|
+|  5|  50|  50|
+|  5| 100|null|
+|  4|  40|  40|
+|  4|  80|null|
+|  2|  20|  20|
+|  2|  40|null|
++---+----+----+
+
+	
+
+
+
+
+

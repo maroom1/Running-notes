@@ -1,0 +1,33 @@
+
+
+sqlContext(predefined) implements HiveContext so no need to create other sqlContext
+
+
+  val files = sc.wholeTextFiles("file:///home/edureka/Downloads/emp.json")
+ val jsonData = files.map(x => x._2)
+import org.apache.spark.sql.hive._
+import org.apache.spark.sql.hive.HiveContext
+val hc=new HiveContext(sc)
+  hc.jsonRDD(jsonData).registerTempTable("employee")
+val fuldf=hc.jsonRDD(jsonData)
+val dfemp=fuldf.select(explode(col("Employees")))
+dfemp.saveAsTable("empdummy")
+val df=("select * from empdummy")
+df.select ("_c0.userId","_c0.jobTitleName","_c0.firstName","_c0.lastName","_c0.preferredFullName","_c0.employeeCode","_c0.region","_c0.phoneNumber","_c0.emailAddress").saveAsTable("dummytab")
+
+val emp=hc.sql("select Employees[1].userId as ID,Employees[1].jobTitleName as Title,Employees[1].firstName as FirstName,Employees[1].lastName as LastName,Employees[1].preferredFullName as PeferedName,Employees[1].employeeCode as empCode,Employees[1].region as Region,Employees[1].phoneNumber as Phone,Employees[1].emailAddress as email from employee")
+
+emp.saveAsTable("enpdata")
+
+import hc.implicits._
+
+-----------------------------------------
+
+924  val input = sc.parallelize(Array(("age",0.75), ("school", 0.95)))
+926  case class Student(factor:String,rate:Double)
+931  val studf=input.map(x=>Student(x._1,x._2)).toDF
+932  studf.saveAsTable("Student")
+
+---------------------------------------------
+
+
